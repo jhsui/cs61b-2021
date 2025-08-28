@@ -229,11 +229,20 @@ public class Model extends Observable {
             }
         }
 
+        //check the last col
         for (int row = 0; row < b.size() - 1; row++) {
             if (b.tile(b.size() - 1, row) != null && b.tile(b.size() - 1, row).value() == b.tile(b.size() - 1, row + 1).value()) {
                 return true;
             }
         }
+
+        //check the last row
+        for (int col = 0; col < b.size() - 1; col++) {
+            if (b.tile(col, b.size() - 1) != null && b.tile(col, b.size() - 1).value() == b.tile(col + 1, b.size() - 1).value()) {
+                return true;
+            }
+        }
+
 
         return false;
 
