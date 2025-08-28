@@ -1,13 +1,14 @@
 package game2048;
 
 import java.util.Formatter;
+import java.util.Iterator;
 import java.util.Observable;
 
 
 /**
  * The state of a game of 2048.
  *
- * @author TODO: YOUR NAME HERE -- sui
+ * @author TODO: YOUR NAME HERE -- jiahan
  */
 public class Model extends Observable {
     /**
@@ -172,11 +173,18 @@ public class Model extends Observable {
      */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
-        for (int i = 0; i < b.size(); i++) {
-            for (int j = 0; j < b.size(); j++) {
-                if (b.tile(i, j) == null) {
-                    return true;
-                }
+//        for (int i = 0; i < b.size(); i++) {
+//            for (int j = 0; j < b.size(); j++) {
+//                if (b.tile(i, j) == null) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+
+        for (Tile tile : b) {
+            if (tile == null) {
+                return true;
             }
         }
         return false;
@@ -208,7 +216,28 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+
+        for (int col = 0; col < b.size() - 1; col++) {
+            for (int row = 0; row < b.size() - 1; row++) {
+                //cols are the same, check row; then rows are the same, check col
+                if (b.tile(col, row) != null && (b.tile(col, row).value() == b.tile(col, row + 1).value() || b.tile(col, row).value() == b.tile(col + 1, row).value())) {
+                    return true;
+                }
+            }
+        }
+
+        for (int row = 0; row < b.size() - 1; row++) {
+            if (b.tile(b.size() - 1, row) != null && b.tile(b.size() - 1, row).value() == b.tile(b.size() - 1, row + 1).value()) {
+                return true;
+            }
+        }
+
         return false;
+
+
     }
 
 
