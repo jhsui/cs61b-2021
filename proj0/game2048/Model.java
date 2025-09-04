@@ -147,7 +147,7 @@ public class Model extends Observable {
 
         for (int col = 0; col < board.size(); col++) {
 
-            boolean[] merged = {false, false, false}; // Used to mark if row 3/2/1 is merged or not.
+            boolean[] merged = {false, false}; // Used to mark if row 3 & 2, 2 & 1 are merged or not.
 
             for (int row = board.size() - 2; row >= 0; row--) { // Start from row 2.
                 Tile t = board.tile(col, row);
