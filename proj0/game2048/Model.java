@@ -145,11 +145,202 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        /*
+         * goal: to make it work for the side North
+         */
+
+
+        // !!! I IGNORE THE SEQUENCE OF THE FOR LOOP!!! WHAT THE HELL
+        for (int col = 0; col < size(); col += 1) {
+
+            /* we use this array to track if the tiles on this col are merged or not
+             * merged[0] indicates that if row 2 is merged or not
+             *  so, if row 2 is merged, then row 3 is smt and row 2 is empty. it's also applied to other rows
+             * if row 1 is merged then row 1 is empty
+             */
+
+            boolean[] merged = {false, false, false};
+
+            for (int row = size() - 2; row >= 0; row--) {
+                Tile t = board.tile(col, row);
+
+
+                if (t != null) {
+                    // row 3 does not move, we start from row 2
+                    if (row == 2) {
+                        /*
+                         * if the values are the same or row 3 is empty, we move; else we dont move
+                         *
+                         * leave score for later
+                         *
+                         * !!! we also need to know if the above is changed or not
+                         */
+
+                        if (board.tile(col, 3) == null || t.value() == board.tile(col, 3).value()) {
+                            board.move(col, 3, t);
+                            merged[0] = true;
+
+                            changed = true;
+
+                        }
+                    }
+
+
+                    if (row == 1) {
+                        if (isTheAboveEmpty(t)) {
+                            board.move(col, 3, t);
+                            changed = true;
+                        } else {
+                            /*
+                             * Now this tile's top is not empty,
+                             * we first need to know which row is not empty,
+                             * then we need to know if the tile has been merged or not
+                             *
+                             * There are several cases:
+                             * 1. Row 3 is filled, row 2 is empty, merged happened
+                             * 2. Row 3 is filled, row 2 is empty, merged didn't happen, row 2 was just moved
+                             * 3. Row 3 is empty, row 2 is filled, impossible ❌
+                             * 4. Row 3 is filled, row 2 is filled, nothing happened before
+                             */
+
+
+                            if (merged[0]) { // merged happened before, then row 2 must be empty
+                                /*
+                                 * if row 2 was merged, then row 2 is empty
+                                 * now we can't merge even if the value is the same as row 3, so we just move up 1 row
+                                 */
+                                board.move(col, 2, t);
+                                changed = true;
+                            } else {
+                                /*
+                                 * merge did not happen
+                                 *
+                                 * now we first need to know if row 2 is empty
+                                 *
+                                 * 1. row 2 is filled, we check if the value is the same with row 2 then tell if merge
+                                 *
+                                 * 2. row 2 is empty, we check if the value is the same with row 3 then tell if merge
+                                 */
+
+
+                                if (board.tile(col, 2) != null) { // row 2 is not empty
+
+                                    if (t.value() == board.tile(col, 2).value()) { // if row 1 is the same as row 2
+                                        board.move(col, 2, t);
+                                        merged[1] = true;
+                                        changed = true;
+                                    }
+                                    // row 2 is not empty and not the same as row 1, we do nothing
+
+                                } else { // row 2 is empty, so row 3 can't be empty
+                                    if (t.value() == board.tile(col, 3).value()) { // row 1 the same as row 3
+                                        board.move(col, 3, t);
+                                        merged[1] = true;
+                                        changed = true;
+                                    } else { // row1 different from row3, so we just move it to row2
+                                        board.move(col, 2, t);
+                                        changed = true;
+                                    }
+
+                                }
+
+                            }
+
+
+                        }
+                    }
+
+                    if (row == 0) {
+                        if (isTheAboveEmpty(t)) {
+                            board.move(col, 3, t);
+                            changed = true;
+                        } else {
+                            /*
+                             *
+                             *
+                             * !!!I IGNORE THE TRUTH THAT IF THE ABOVE IS A MERGED TILE!!!
+                             *
+                             * ROW 1 CAN'T BE A MERGED ONE.
+                             * JUST ROW 2 AND ROW 3
+                             *
+                             *
+                             * now the above is not empty.
+                             *
+                             * What happened before this???
+                             * Each tile above row 0 was moved up until it can't be moved. So the following 2.1 and 2.3 is impossible.
+                             * All the tile above row 0 are different.
+                             *
+//                             * cases:
+//                             * 1. one tile exists: row 3/row 2/row 1
+//                             *
+//                             * 2. two tiles exist:
+//                             *      2.1: row 3 is empty.
+//                             *           We need to know if row 2 and row 1 are the same.
+//                             *           If they are, then we merge them and move the new tile to row 3 and then move row 1 to row 2.
+//                             *           If they aren't, then we need to tell if row 1 and row 0 are the same, if they are, we move row 2 to row 3,
+//                             *           and then move the new tile of row 1 and row 0 to row 2
+//                             *      2.2: row 2 is empty. We do the same as 2.1
+//                             *      2.3: row 1 is empty. We do the same as 2.1
+//                             *
+//                             * 3. three tiles: we need to know if the above is the same or not
+
+
+
+
+                             *
+                             * New cases:
+                             * 1. Only one tile exists: Then it is row 3
+                             * 2. Two tiles exist: They are row 2 and row 1.
+                             * 3. Three tiles exist:
+                             *
+                             *
+                             * !!! MY PROBLEM HERE IS THAT I JUST CONSIDER THE SITUATION THAT THERE IS PROBLEM BUT I IGNORE THE FACT THAT I STILL NEED TO MOVE IT TO THE TOPEST EMPTY SPOT
+                             *
+                             */
+                            if (board.tile(col, 1) != null) { // Row 1 isn't empty.
+                                if (t.value() == board.tile(col, 1).value()) { // If row 0 and row 1 are the same, we move. If not, we do nothing.
+                                    board.move(col, 1, t);
+                                    changed = true;
+                                }
+
+                            } else if (board.tile(col, 2) != null) { // Row 2 isn't empty
+                                if (t.value() == board.tile(col, 2).value()) {
+                                    board.move(col, 1, t);
+                                    changed = true;
+                                }
+
+                            } else if (board.tile(col, 3) != null) {
+                                if (t.value() == board.tile(col, 3).value()) {
+                                    board.move(col, 3, t);
+                                    changed = true;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+        }
+
+
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    // A method to tell if the above of a tile is empty or not
+    public boolean isTheAboveEmpty(Tile tile) {
+        for (int row = tile.row() + 1; row < size(); row++) {
+            if (board.tile(tile.col(), row) != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -251,8 +442,7 @@ public class Model extends Observable {
 
 
     @Override
-    /** Returns the model as a string, used for debugging. */
-    public String toString() {
+    /** Returns the model as a string, used for debugging. */ public String toString() {
         Formatter out = new Formatter();
         out.format("%n[%n");
         for (int row = size() - 1; row >= 0; row -= 1) {
@@ -271,8 +461,7 @@ public class Model extends Observable {
     }
 
     @Override
-    /** Returns whether two models are equal. */
-    public boolean equals(Object o) {
+    /** Returns whether two models are equal. */ public boolean equals(Object o) {
         if (o == null) {
             return false;
         } else if (getClass() != o.getClass()) {
@@ -283,8 +472,7 @@ public class Model extends Observable {
     }
 
     @Override
-    /** Returns hash code of Model’s string. */
-    public int hashCode() {
+    /** Returns hash code of Model’s string. */ public int hashCode() {
         return toString().hashCode();
     }
 }
