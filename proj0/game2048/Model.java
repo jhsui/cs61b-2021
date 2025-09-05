@@ -138,7 +138,6 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
 
 
-        // I ignore a fact that move can return true or false...
         board.setViewingPerspective(side);
 
         boolean changed;
@@ -150,7 +149,7 @@ public class Model extends Observable {
 
         for (int col = 0; col < board.size(); col++) {
 
-            HashMap<Integer, Boolean> merged = new HashMap<>(); // Used to mark if row 3 & 2, 2 & 1 are merged or not.
+            HashMap<Integer, Boolean> merged = new HashMap<>(); // Used to mark if a row is merged or not.
 
             for (int row = board.size() - 2; row >= 0; row--) { // Start from Row == 2.
                 Tile t = board.tile(col, row);
@@ -170,18 +169,16 @@ public class Model extends Observable {
                                     score += 2 * t.value();
                                     board.move(col, topNull + 1, t);
                                     merged.put(topNull + 1, true);
-                                    changed = true;
 
                                 } else {
                                     board.move(col, topNull, t);
-                                    changed = true;
                                 }
                             } else { // The above is merged. So we just move to topNull.
                                 board.move(col, topNull, t);
-                                changed = true;
 
 
                             }
+                            changed = true;
 
                         } else { // all the tiles above t are not null.
                             if (board.tile(col, row + 1).value() == t.value()) {
@@ -214,9 +211,6 @@ public class Model extends Observable {
 
     // A method to tell if the above of a tile is empty or not
     public boolean isTheAboveEmpty(int col, int row) {
-
-
-        //board.setViewingPerspective(side);
 
         for (int r = size() - 1; r > row; r--) {
             if (board.tile(col, r) != null) {
