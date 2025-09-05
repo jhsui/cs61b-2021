@@ -138,6 +138,11 @@ public class Model extends Observable {
      * and the trailing tile does not.
      */
     public boolean tilt(Side side) {
+
+
+        // I ignore a fact that move can return true or false...
+        board.setViewingPerspective(side);
+
         boolean changed;
         changed = false;
 
@@ -155,10 +160,10 @@ public class Model extends Observable {
                 if (t != null) {
 
                     if (row == 2) {
-                        if (isTheAboveEmpty(t)) { // Just move, no merge
+                        if (isTheAboveEmpty(col, row)) { // Just move, no merge
                             board.move(col, 3, t);
                             changed = true;
-                        } else if (board.tile(col, 3).value() == t.value()) { // we are going to merge
+                        } else if (board.tile(col, 3).value() == t.value()) { // we are going to merge Row 2 and Row 3.
                             score += 2 * t.value();
                             board.move(col, 3, t);
                             changed = true;
@@ -167,7 +172,7 @@ public class Model extends Observable {
                     }
 
                     if (row == 1) {
-                        if (isTheAboveEmpty(t)) {
+                        if (isTheAboveEmpty(col, row)) {
                             board.move(col, 3, t);
                             changed = true;
                         } else {
@@ -175,11 +180,10 @@ public class Model extends Observable {
                             Above is not empty.
                             Only possible cases are:
                                 1. Row 3 is filled and row 2 is empty
-                                2. Row 3 and Row 2 are both filled and they are not the same.
+                                2. Row 3 and Row 2 are both filled, and they are not the same.
                              */
 
                             if (board.tile(col, 2) == null) { // Row 2 is empty
-
 
                                 if (!merged[0]) { // Row 3 has not been merged.
                                     if (t.value() == board.tile(col, 3).value()) { // Row 1 is equal to Row 3.
@@ -188,7 +192,12 @@ public class Model extends Observable {
                                         changed = true;
                                         merged[0] = true; // How do we deal with here??? How to set the value of the array??? Not the situation is Row 3 is merged and row 2 is empty and 1 is empty
 
+                                    } else {
+                                        board.move(col, 2, t);
+                                        changed = true;
                                     }
+
+
                                 } else { // Row 3 has been merged.
                                     board.move(col, 2, t);
                                     changed = true;
@@ -210,7 +219,7 @@ public class Model extends Observable {
                     }
 
                     if (row == 0) {
-                        if (isTheAboveEmpty(t)) {
+                        if (isTheAboveEmpty(col, row)) {
                             board.move(col, 3, t);
                             changed = true;
                         } else {
@@ -228,6 +237,9 @@ public class Model extends Observable {
                                             score += 2 * t.value();
                                             board.move(col, 3, t);
                                             changed = true;
+                                        } else {
+                                            board.move(col, 2, t);
+                                            changed = true;
                                         }
                                     } else {
                                         board.move(col, 2, t);
@@ -241,6 +253,9 @@ public class Model extends Observable {
                                             board.move(col, 2, t);
                                             changed = true;
 
+                                        } else { // Row 2 has not been merged but is different from Row 0
+                                            board.move(col, 1, t);
+                                            changed = true;
                                         }
 
                                     } else { // Row 2 has been merged.
@@ -268,6 +283,8 @@ public class Model extends Observable {
         }
 
 
+        board.setViewingPerspective(Side.NORTH);
+
         checkGameOver();
         if (changed) {
             setChanged();
@@ -276,14 +293,31 @@ public class Model extends Observable {
     }
 
     // A method to tell if the above of a tile is empty or not
-    public boolean isTheAboveEmpty(Tile tile) {
-        for (int row = tile.row() + 1; row < size(); row++) {
-            if (board.tile(tile.col(), row) != null) {
+    public boolean isTheAboveEmpty(int col, int row) {
+
+
+        //board.setViewingPerspective(side);
+
+        for (int r = size() - 1; r > row; r--) {
+            if (board.tile(col, r) != null) {
                 return false;
             }
         }
 
         return true;
+    }
+
+
+    // Return the row number of the top null tile
+    public int topNull(int col, int row) {
+        for (int r = size() - 1; r > row; r--) {
+
+            if (board.tile(col, r) == null) {
+                return r;
+            }
+        }
+
+        return -1;
     }
 
     /**
