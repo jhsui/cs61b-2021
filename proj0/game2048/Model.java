@@ -1,8 +1,6 @@
 package game2048;
 
-import java.util.Formatter;
-import java.util.Iterator;
-import java.util.Observable;
+import java.util.*;
 
 
 /**
@@ -152,129 +150,51 @@ public class Model extends Observable {
 
         for (int col = 0; col < board.size(); col++) {
 
-            boolean[] merged = {false, false}; // Used to mark if row 3 & 2, 2 & 1 are merged or not.
+            HashMap<Integer, Boolean> merged = new HashMap<>(); // Used to mark if row 3 & 2, 2 & 1 are merged or not.
 
-            for (int row = board.size() - 2; row >= 0; row--) { // Start from row 2.
+            for (int row = board.size() - 2; row >= 0; row--) { // Start from Row == 2.
                 Tile t = board.tile(col, row);
 
                 if (t != null) {
 
-                    if (row == 2) {
-                        if (isTheAboveEmpty(col, row)) { // Just move, no merge
-                            board.move(col, 3, t);
-                            changed = true;
-                        } else if (board.tile(col, 3).value() == t.value()) { // we are going to merge Row 2 and Row 3.
-                            score += 2 * t.value();
-                            board.move(col, 3, t);
-                            changed = true;
-                            merged[0] = true; // row 2 was merged to row 3, so if merged[0] == false, then row 3 can not be merged anymore and row 2 is empty
-                        }
-                    }
+                    if (isTheAboveEmpty(col, row)) { // To tell if the above is empty.
 
-                    if (row == 1) {
-                        if (isTheAboveEmpty(col, row)) {
-                            board.move(col, 3, t);
-                            changed = true;
-                        } else {
-                            /*
-                            Above is not empty.
-                            Only possible cases are:
-                                1. Row 3 is filled and row 2 is empty
-                                2. Row 3 and Row 2 are both filled, and they are not the same.
-                             */
+                        board.move(col, 3, t);
+                        changed = true;
+                    } else {
+                        int topNull = topNull(col, row);
 
-                            if (board.tile(col, 2) == null) { // Row 2 is empty
-
-                                if (!merged[0]) { // Row 3 has not been merged.
-                                    if (t.value() == board.tile(col, 3).value()) { // Row 1 is equal to Row 3.
-                                        score += 2 * t.value();
-                                        board.move(col, 3, t);
-                                        changed = true;
-                                        merged[0] = true; // How do we deal with here??? How to set the value of the array??? Not the situation is Row 3 is merged and row 2 is empty and 1 is empty
-
-                                    } else {
-                                        board.move(col, 2, t);
-                                        changed = true;
-                                    }
-
-
-                                } else { // Row 3 has been merged.
-                                    board.move(col, 2, t);
-                                    changed = true;
-
-                                }
-
-                            } else { // Row 2 isn't empty
-                                if (t.value() == board.tile(col, 2).value()) { // Row 1 == Row 2.
+                        if (topNull != -1) {
+                            if (merged.get(topNull + 1) == null) { // The above hasn't been merged.
+                                if (t.value() == board.tile(col, topNull + 1).value()) { // same value, we are going to merge.
                                     score += 2 * t.value();
-                                    board.move(col, 2, t);
+                                    board.move(col, topNull + 1, t);
+                                    merged.put(topNull + 1, true);
                                     changed = true;
-                                    merged[1] = true;
+
+                                } else {
+                                    board.move(col, topNull, t);
+                                    changed = true;
                                 }
+                            } else { // The above is merged. So we just move to topNull.
+                                board.move(col, topNull, t);
+                                changed = true;
+
 
                             }
 
-                        }
-
-                    }
-
-                    if (row == 0) {
-                        if (isTheAboveEmpty(col, row)) {
-                            board.move(col, 3, t);
-                            changed = true;
-                        } else {
-                            /*
-                            Cases:
-                                1. No empty.
-                                2. One empty, then it must be row 1
-                                3. Two empty, then Row 3 is not empty.
-                             */
-
-                            if (board.tile(col, 1) == null) {
-                                if (board.tile(col, 2) == null) { // Row 1 and Row 2 is empty
-                                    if (!merged[0]) { // Row 3 has not been merged
-                                        if (t.value() == board.tile(col, 3).value()) {
-                                            score += 2 * t.value();
-                                            board.move(col, 3, t);
-                                            changed = true;
-                                        } else {
-                                            board.move(col, 2, t);
-                                            changed = true;
-                                        }
-                                    } else {
-                                        board.move(col, 2, t);
-                                        changed = true;
-                                    }
-
-                                } else { // Row 2 is not empty. Row 1 is empty.
-                                    if (!merged[1]) { // Row 2 has not been merged
-                                        if (board.tile(col, 2).value() == t.value()) {
-                                            score += 2 * t.value();
-                                            board.move(col, 2, t);
-                                            changed = true;
-
-                                        } else { // Row 2 has not been merged but is different from Row 0
-                                            board.move(col, 1, t);
-                                            changed = true;
-                                        }
-
-                                    } else { // Row 2 has been merged.
-                                        board.move(col, 1, t);
-                                        changed = true;
-                                    }
-
-                                }
-                            } else { // Row 1 is not empty.
-                                if (board.tile(col, 1).value() == t.value()) {
-                                    score += 2 * t.value();
-                                    board.move(col, 1, t);
-                                    changed = true;
-
-                                }
-
+                        } else { // all the tiles above t are not null.
+                            if (board.tile(col, row + 1).value() == t.value()) {
+                                score += 2 * t.value();
+                                board.move(col, row + 1, t);
+                                changed = true;
+                                merged.put(row + 1, true);
                             }
                         }
+
+
                     }
+
 
                 }
 
@@ -308,8 +228,8 @@ public class Model extends Observable {
     }
 
 
-    // Return the row number of the top null tile
-    public int topNull(int col, int row) {
+    // Return the row number of the top null tile. Row starts from 2.
+    public int topNull(int col, int row) { // what will happen when row == 2: if row 3 is null, it will return 3, or it will return -1
         for (int r = size() - 1; r > row; r--) {
 
             if (board.tile(col, r) == null) {
