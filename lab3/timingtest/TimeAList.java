@@ -1,5 +1,8 @@
 package timingtest;
+
 import edu.princeton.cs.algs4.Stopwatch;
+
+import java.util.Arrays;
 
 /**
  * Created by hug.
@@ -23,5 +26,48 @@ public class TimeAList {
 
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
+
+//        int[] arrayOfN = {1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000};
+//        double[] arrayOfTimes = new double[8];
+//
+//
+//        for (int j = 0; j < arrayOfN.length; j++) {
+//            int N = arrayOfN[j];
+//            AList<Integer> a = new AList<>();
+//            Stopwatch sw = new Stopwatch();
+//            for (int i = 0; i < N; i++) {
+//                a.addLast(i);
+//            }
+//            double timeInSeconds = sw.elapsedTime();
+//            arrayOfTimes[j] = timeInSeconds;
+//        }
+//        printTimingTable(arrayOfN,arrayOfTimes, arrayOfN);
+
+        AList<Integer> Ns = new AList<>();
+        Ns.addLast(1000);
+        Ns.addLast(2000);
+        Ns.addLast(4000);
+        Ns.addLast(8000);
+        Ns.addLast(16000);
+        Ns.addLast(32000);
+        Ns.addLast(64000);
+        Ns.addLast(128000);
+        Ns.addLast(128000 * 2);
+        //Ns.addLast(128000 * 2 * 2);
+
+
+        AList<Double> times = new AList<>();
+
+        for (int j = 0; j < Ns.size(); j++) {
+            int N = Ns.get(j);
+            AList<Integer> a = new AList<>();
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < N; i++) {
+                a.addLast(i);
+            }
+            double timeInSeconds = sw.elapsedTime();
+            times.addLast(timeInSeconds);
+        }
+        printTimingTable(Ns, times, Ns);
     }
 }
