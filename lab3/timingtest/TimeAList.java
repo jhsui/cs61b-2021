@@ -52,10 +52,10 @@ public class TimeAList {
         Ns.addLast(32000);
         Ns.addLast(64000);
         Ns.addLast(128000);
-        Ns.addLast(128000 * 2);
-        Ns.addLast(128000 * 2 * 2);
-        Ns.addLast(128000 * 2 * 2 * 2);
-        Ns.addLast(128000 * 2 * 2 * 2 * 2);
+//        Ns.addLast(128000 * 2);
+//        Ns.addLast(128000 * 2 * 2);
+//        Ns.addLast(128000 * 2 * 2 * 2);
+//        Ns.addLast(128000 * 2 * 2 * 2 * 2);
 //        Ns.addLast(128000 * 2 * 2 * 2 * 2 * 2);
 //        Ns.addLast(128000 * 2 * 2 * 2 * 2 * 2 * 2);
 //        Ns.addLast(128000 * 2 * 2 * 2 * 2 * 2 * 2 * 2);
