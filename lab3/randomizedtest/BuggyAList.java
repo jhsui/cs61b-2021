@@ -1,7 +1,9 @@
 package randomizedtest;
 
-/** Array based list.
- *  @author Josh Hug
+/**
+ * Array based list.
+ *
+ * @author Josh Hug
  */
 
 //         0 1  2 3 4 5 6 7
@@ -18,49 +20,67 @@ public class BuggyAList<Item> {
     private Item[] items;
     private int size;
 
-    /** Creates an empty list. */
+    /**
+     * Creates an empty list.
+     */
     public BuggyAList() {
         items = (Item[]) new Object[1];
         size = 0;
     }
 
-    /** Resizes the underlying array to the target capacity. */
+    /**
+     * Resizes the underlying array to the target capacity.
+     */
     private void resize(int capacity) {
         Item[] a = (Item[]) new Object[capacity];
         for (int i = 0; i < size; i += 1) {
+            // what is happening is that the new array-a is smaller than the original item[] array.
             a[i] = items[i];
         }
         items = a;
     }
 
-    /** Inserts X into the back of the list. */
+    /**
+     * Inserts X into the back of the list.
+     */
     public void addLast(Item x) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(items.length * 2);
         }
         items[size] = x;
         size = size + 1;
     }
 
-    /** Returns the item from the back of the list. */
+    /**
+     * Returns the item from the back of the list.
+     */
     public Item getLast() {
         return items[size - 1];
     }
-    /** Gets the ith item in the list (0 is the front). */
+
+    /**
+     * Gets the ith item in the list (0 is the front).
+     */
     public Item get(int i) {
         return items[i];
     }
 
-    /** Returns the number of items in the list. */
+    /**
+     * Returns the number of items in the list.
+     */
     public int size() {
         return size;
     }
 
-    /** Deletes item from back of the list and
-      * returns deleted item. */
+    /**
+     * Deletes item from back of the list and
+     * returns deleted item.
+     */
     public Item removeLast() {
+
+        // size is the actual size, and items.length is the total length of the buggyArray.
         if ((size < items.length / 4) && (size > 4)) {
-            resize(size / 4);
+            resize(items.length / 4);
         }
         Item x = getLast();
         items[size - 1] = null;

@@ -26,10 +26,10 @@ public class TestBuggyAList {
         ba.addLast(5);
         ba.addLast(6);
 
-//        System.out.println("Hey I'm here!");
+//        //System.out.println("Hey I'm here!");
 //        Object removedLast = anr.removeLast();
-//        System.out.println(removedLast);
-//        System.out.println(removedLast.getClass().getName());
+//        //System.out.println(removedLast);
+//        //System.out.println(removedLast.getClass().getName());
 
         assertEquals(anr.removeLast(), ba.removeLast());
         assertEquals(anr.removeLast(), ba.removeLast());
@@ -40,7 +40,9 @@ public class TestBuggyAList {
     public void randomizedTest() {
 
         AListNoResizing<Integer> L = new AListNoResizing<>();
-        int N = 500;
+        BuggyAList<Integer> buggyAList = new BuggyAList<>();
+
+        int N = 50000;
 
         for (int i = 0; i < N; i += 1) {
 
@@ -51,25 +53,52 @@ public class TestBuggyAList {
                 // addLast
                 int randVal = StdRandom.uniform(0, 100);
                 L.addLast(randVal);
-                System.out.println("addLast(" + randVal + ")");
+                buggyAList.addLast(randVal);
+                //System.out.println("addLast(" + randVal + ")");
+                assertEquals(L.getLast(), buggyAList.getLast());
 
             } else if (operationNumber == 1) {
 
                 // size
-                int size = L.size();
-                System.out.println("size: " + size);
+                int sizeL = L.size();
+                int sizeBuggy = buggyAList.size();
+                //System.out.println("size of AListNoResizing: " + sizeL);
+                assertEquals(sizeL, sizeBuggy);
 
             } else if (operationNumber == 2) {
 
                 //getLast
-                if (L.size() > 0) {
-                    System.out.println("getLast(" + L.getLast() + ")");
+
+//                if (L.size() > 0) {
+//                    //System.out.println("getLast(" + L.getLast() + ") of AListNoResizing");
+//                }
+//
+//                if (buggyAList.size() > 0) {
+//                    //System.out.println("getLast(" + L.getLast() + ") of buggeAList");
+//                }
+
+                if (L.size() > 0 && buggyAList.size() > 0) {
+                    assertEquals(L.getLast(), buggyAList.getLast());
+                } else {
+                    //System.out.println("One of them's size is 0 (getLast). " + "AL: " + L.size() + " bAL: " + buggyAList.size());
                 }
+
             } else if (operationNumber == 3) {
 
                 //removeLast
-                if (L.size() > 0) {
-                    System.out.println("getLast(" + L.removeLast() + ")");
+
+//                if (L.size() > 0) {
+//                    //System.out.println("getLast(" + L.removeLast() + ") of AListNoResizing");
+//                }
+//
+//                if (buggyAList.size() > 0) {
+//                    //System.out.println("getLast(" + buggyAList.removeLast() + ") of buggeAList");
+//                }
+
+                if (L.size() > 0 && buggyAList.size() > 0) {
+                    assertEquals(L.removeLast(), buggyAList.removeLast());
+                } else {
+                    //System.out.println("One of them's size is 0 (removeLast). " + "AL: " + L.size() + " bAL: " + buggyAList.size());
                 }
             }
         }
