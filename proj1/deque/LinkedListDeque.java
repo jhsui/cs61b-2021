@@ -16,6 +16,7 @@ public class LinkedListDeque<T> {
 
         public Node(Node<T> p, T item, Node<T> n) {
             this.prev = p;
+            this.item = item;
             this.next = n;
         }
     }
@@ -25,8 +26,10 @@ public class LinkedListDeque<T> {
 
     // Constructor -- No parameter passed.
     public LinkedListDeque() {
+        //T t = null;
         this.sentinel = new Node<>(null, null, null);
-        this.sentinel.next = this.sentinel.prev;
+        this.sentinel.next = this.sentinel;
+        this.sentinel.prev = this.sentinel;
         this.size = 0;
 
     }
@@ -37,7 +40,10 @@ public class LinkedListDeque<T> {
         Node<T> node = new Node<>(null, item, null);
 
         this.sentinel.next = node;
-        node.next = this.sentinel.prev;
+        node.prev = this.sentinel;
+
+        node.next = this.sentinel;
+        this.sentinel.prev = node;
 
         this.size = 1;
 
@@ -45,13 +51,31 @@ public class LinkedListDeque<T> {
 
     // item is never null.
     public void addFirst(T item) {
-        this.sentinel.next = new Node<T>(this.sentinel, item, this.sentinel.next);
+        Node<T> node = new Node<>(null, item, null);
+
+        // let the original first node's previous to be the new node.
+        this.sentinel.next.prev = node;
+        // let node's next to be the original first node
+        node.next = this.sentinel.next;
+
+        //let sentinel's next to be the new node.
+        this.sentinel.next = node;
+        // let node's previous to be the sentinel.
+        node.prev = this.sentinel;
+
         this.size++;
     }
 
     // item is never null.
     public void addLast(T item) {
-        this.sentinel.prev = new Node<T>(this.sentinel.prev, item, this.sentinel);
+        Node<T> node = new Node<>(null, item, null);
+
+        this.sentinel.prev.next = node;
+        node.prev = this.sentinel.prev;
+
+        this.sentinel.prev = node;
+        node.next = this.sentinel;
+
         this.size++;
     }
 
@@ -69,6 +93,7 @@ public class LinkedListDeque<T> {
         Node<T> node = this.sentinel.next;
         for (int i = 0; i < this.size(); i++) {
             System.out.print(node.item.toString() + " ");
+            node = node.next;
         }
         System.out.println();
     }
@@ -119,7 +144,7 @@ public class LinkedListDeque<T> {
         return null;
     }
 
-//    @Override
+    //    @Override
     public Iterator<T> iterator() {
 
 
