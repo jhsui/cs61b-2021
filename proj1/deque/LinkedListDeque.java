@@ -11,7 +11,7 @@ public class LinkedListDeque<T> {
         // It is just a node but has two fields
         // which one is for its previous node and one is for its next node.
         private Node<T> prev;
-        private T item;
+        private final T item;
         private Node<T> next;
 
         public Node(Node<T> p, T item, Node<T> n) {
@@ -21,7 +21,7 @@ public class LinkedListDeque<T> {
         }
     }
 
-    private Node<T> sentinel;
+    private final Node<T> sentinel;
     private int size;
 
     // Constructor -- No parameter passed.
@@ -124,9 +124,6 @@ public class LinkedListDeque<T> {
 
     public T get(int index) {
 
-        if (this.size() == 0) {
-            return null;
-        }
 
         if (index < 0 || index > this.size() - 1) {
             return null;
@@ -144,11 +141,14 @@ public class LinkedListDeque<T> {
         return null;
     }
 
+
+    // I don't know if it is correct or not!
+
     //    @Override
     public Iterator<T> iterator() {
 
 
-        return new Iterator<T>() {
+        return new Iterator<>() {
 
             private Node<T> node = sentinel;
 
@@ -183,32 +183,30 @@ public class LinkedListDeque<T> {
         return false;
     }
 
-    // nooooooooooooooooooooooooooooooooo
-    public T getRecursive(int index) {
-
-        if (this.size() == 0) {
-            return null;
-        }
-
-        if (index < 0 || index > this.size() - 1) {
-            return null;
-        }
-
-        // iterate from the first node.
-        Node<T> node = this.sentinel.next;
-
-        int i = 0;
-
-        if (i == index) {
-            return node.item;
-        } else {
-            i += 1;
-            node = node.next;
-            return getRecursive(index);
-        }
-
-
-    }
+    // Not correct yet.
+//    public T getRecursive(int index) {
+//
+//        if (this.size() == 0) {
+//            return null;
+//        }
+//
+//        if (index < 0 || index > this.size() - 1) {
+//            return null;
+//        }
+//
+//        // iterate from the first node.
+//        Node<T> node = this.sentinel.next;
+//
+//        int i = 0;
+//
+//        if (i == index) {
+//            return node.item;
+//        } else {
+//            i += 1;
+//            node = node.next;
+//            return getRecursive(index);
+//        }
+//    }
 
 
 }
