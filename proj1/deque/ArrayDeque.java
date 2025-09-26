@@ -26,13 +26,13 @@ public class ArrayDeque<T> {
         this.nextLast = 0;
     }
 
-//    public ArrayDeque(T item) {
-//        arr = (T[]) new Object[8];
-//        this.size = 0;
-//        this.nextFirst = 0;
-//        this.nextLast = 1;
-//        arr[this.nextFirst] = item;
-//    }
+    public ArrayDeque(T item) {
+        arr = (T[]) new Object[8];
+        this.size = 0;
+        this.nextFirst = 0;
+        this.nextLast = 0;
+        this.addFirst(item);
+    }
 
     /// we need to implement it!
     private void resize(int capacity) {
