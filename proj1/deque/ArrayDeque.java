@@ -20,9 +20,9 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         arr = (T[]) new Object[8];
         this.size = 0;
-        this.nextFirst = 0;
+        this.nextFirst = 3;
         // TODO: should they both start from 0 ???
-        this.nextLast = 0;
+        this.nextLast = 4;
         //TODO: modify nextFirst and nextLast when add, remove and when they are the same.
     }
 
@@ -73,9 +73,10 @@ public class ArrayDeque<T> {
         // there is smt wrong. it overwrote the original index 0 when the arr is new.
         arr[this.nextFirst] = item;
         this.nextFirst--;
-        if (this.nextFirst == -1) {
+/*        if (this.nextFirst == -1) {
             this.nextFirst = this.nextLast + (this.arr.length - this.size());
         }
+*/
     }
 
     public void addLast(T item) {
@@ -120,6 +121,9 @@ public class ArrayDeque<T> {
         }
 */
         this.size--;
+        if (this.size() < 0) {
+            this.size = 0;
+        }
         this.nextFirst++;
         return this.get(this.nextFirst);
     }
@@ -131,6 +135,9 @@ public class ArrayDeque<T> {
         }
 */
         this.size--;
+        if (this.size() < 0) {
+            this.size = 0;
+        }
         this.nextLast--;
         return this.get(this.nextLast);
 
@@ -160,10 +167,10 @@ public class ArrayDeque<T> {
 */
     }
 
-/*
-    public Iterator<T> iterator() {
-    }
-*/
+    /*
+        public Iterator<T> iterator() {
+        }
+    */
     public boolean equals(Object o) {
         if (o instanceof ArrayDeque) {
             for (int i = 0; i < this.size(); i++) {
