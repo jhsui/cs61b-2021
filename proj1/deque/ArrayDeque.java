@@ -145,14 +145,19 @@ public class ArrayDeque<T> {
         // but in our practical array, index also means how many index + 1 in front of this item.
         // This first item's index is 0!!
 
+
+        return this.arr[index];
+/*
         int actualIndex = this.nextFirst + 1 + index;
         if (actualIndex > arr.length - 1) {
+            //TODO: how to deal the get? I think it's related to how i copy the array.
             //actualIndex -= this.size();
             //actualIndex = 0 + (actualIndex + 1 - (this.arr.length - (this.nextFirst + 1)));
             //actualIndex = this.nextLast + (this.arr.length - (this.nextFirst + 1));
             actualIndex = this.nextLast - this.size() - (this.arr.length - this.nextFirst);
         }
         return arr[actualIndex];
+*/
     }
 
 /*
