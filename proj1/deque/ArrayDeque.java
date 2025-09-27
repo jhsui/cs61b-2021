@@ -38,15 +38,15 @@ public class ArrayDeque<T> {
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
         System.arraycopy(arr, 0, newArray, 0, this.size());
-        this.nextFirst = 0;
-        this.nextLast = arr.length;
+        this.nextLast = this.arr.length - 1;
         arr = newArray;
+        this.nextFirst = this.arr.length - 1;
+
 
     }
 
     public void addFirst(T item) {
 
-        this.size++;
 
         if (this.size() == arr.length) {
 
@@ -70,11 +70,15 @@ public class ArrayDeque<T> {
 
         }
 
+        this.size++;
+
+
+        // there is smt wrong. it overwrote the original index 0 when the arr is new.
         arr[this.nextFirst] = item;
         this.nextFirst--;
 
         if (this.nextFirst == -1) {
-            this.nextFirst = this.nextLast + (this.arr.length - this.size()) - 1;
+            this.nextFirst = this.nextLast + (this.arr.length - this.size());
         }
 
 
@@ -82,11 +86,12 @@ public class ArrayDeque<T> {
 
     public void addLast(T item) {
 
-        this.size++;
 
         if (this.size() == arr.length) {
             this.resize(arr.length * 2);
         }
+
+        this.size++;
 
 
         arr[this.nextLast] = item;
@@ -116,12 +121,13 @@ public class ArrayDeque<T> {
 
     public T removeFirst() {
 
-        this.size--;
 
         // we need to contract.
         if (this.size() < arr.length * 0.25) {
             this.resize(arr.length / 2);
         }
+
+        this.size--;
 
         this.nextFirst++;
 
@@ -129,10 +135,11 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        this.size--;
         if (this.size() < arr.length * 0.25) {
             this.resize(arr.length / 2);
         }
+
+        this.size--;
 
         this.nextLast--;
         return this.get(this.nextLast);
@@ -145,7 +152,12 @@ public class ArrayDeque<T> {
             return null;
         }
 
-        return arr[index];
+        // there is smt wrong, what is the real index?
+        int realIndex = this.nextFirst + 1 + index;
+        if (realIndex > arr.length - 1) {
+            realIndex -= this.size();
+        }
+        return arr[realIndex];
 
     }
 
