@@ -20,6 +20,11 @@ public class ArrayDequeTest {
         ad.addLast(5);
         ad.addLast(6);
         ad.addLast(7);
+        ad.addLast(8);
+        ad.addLast(9);
+        ad.addLast(10);
+
+
 
         assertEquals(Integer.valueOf(0), ad.get(0));
         assertEquals(Integer.valueOf(1), ad.get(1));
@@ -29,6 +34,9 @@ public class ArrayDequeTest {
         assertEquals(Integer.valueOf(5), ad.get(5));
         assertEquals(Integer.valueOf(6), ad.get(6));
         assertEquals(Integer.valueOf(7), ad.get(7));
+        assertEquals(Integer.valueOf(8), ad.get(8));
+        assertEquals(Integer.valueOf(9), ad.get(9));
+        assertEquals(Integer.valueOf(10), ad.get(10));
 
     }
 
@@ -44,10 +52,11 @@ public class ArrayDequeTest {
         ad.addFirst(5);
         ad.addFirst(6);
         ad.addFirst(7);
-//        ad.addFirst(8);
-//        ad.addFirst(9);
-//        ad.addFirst(10);
-//        ad.addFirst(11);
+
+        ad.addFirst(8);
+        ad.addFirst(9);
+        ad.addFirst(10);
+        ad.addFirst(11);
 
 
 //        System.out.println(ad.get(7));
@@ -65,28 +74,28 @@ public class ArrayDequeTest {
         // the way I deal with nextFirst and nextLast!!!
 
 
-        assertEquals(Integer.valueOf(0), ad.get(7));
-        assertEquals(Integer.valueOf(1), ad.get(6));
-        assertEquals(Integer.valueOf(2), ad.get(5));
-        assertEquals(Integer.valueOf(3), ad.get(4));
-        assertEquals(Integer.valueOf(4), ad.get(3));
-        assertEquals(Integer.valueOf(5), ad.get(2));
-        assertEquals(Integer.valueOf(6), ad.get(1));
-        assertEquals(Integer.valueOf(7), ad.get(0));
+//        assertEquals(Integer.valueOf(0), ad.get(7));
+//        assertEquals(Integer.valueOf(1), ad.get(6));
+//        assertEquals(Integer.valueOf(2), ad.get(5));
+//        assertEquals(Integer.valueOf(3), ad.get(4));
+//        assertEquals(Integer.valueOf(4), ad.get(3));
+//        assertEquals(Integer.valueOf(5), ad.get(2));
+//        assertEquals(Integer.valueOf(6), ad.get(1));
+//        assertEquals(Integer.valueOf(7), ad.get(0));
 
 
-//        assertEquals(Integer.valueOf(0), ad.get(11));
-//        assertEquals(Integer.valueOf(1), ad.get(10));
-//        assertEquals(Integer.valueOf(2), ad.get(9));
-//        assertEquals(Integer.valueOf(3), ad.get(8));
-//        assertEquals(Integer.valueOf(4), ad.get(7));
-//        assertEquals(Integer.valueOf(5), ad.get(6));
-//        assertEquals(Integer.valueOf(6), ad.get(5));
-//        assertEquals(Integer.valueOf(7), ad.get(4));
-//        assertEquals(Integer.valueOf(8), ad.get(3));
-//        assertEquals(Integer.valueOf(9), ad.get(2));
-//        assertEquals(Integer.valueOf(10), ad.get(1));
-//        assertEquals(Integer.valueOf(11), ad.get(0));
+        assertEquals(Integer.valueOf(0), ad.get(11));
+        assertEquals(Integer.valueOf(1), ad.get(10));
+        assertEquals(Integer.valueOf(2), ad.get(9));
+        assertEquals(Integer.valueOf(3), ad.get(8));
+        assertEquals(Integer.valueOf(4), ad.get(7));
+        assertEquals(Integer.valueOf(5), ad.get(6));
+        assertEquals(Integer.valueOf(6), ad.get(5));
+        assertEquals(Integer.valueOf(7), ad.get(4));
+        assertEquals(Integer.valueOf(8), ad.get(3));
+        assertEquals(Integer.valueOf(9), ad.get(2));
+        assertEquals(Integer.valueOf(10), ad.get(1));
+        assertEquals(Integer.valueOf(11), ad.get(0));
 
     }
 }
