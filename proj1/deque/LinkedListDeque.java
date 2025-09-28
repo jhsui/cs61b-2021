@@ -6,15 +6,15 @@ import java.util.Iterator;
 
 public class LinkedListDeque<T> {
 
-    private static class Node<T> {
+    private static class Node<U> {
 
         // It is just a node but has two fields
         // which one is for its previous node and one is for its next node.
-        private Node<T> prev;
-        private final T item;
-        private Node<T> next;
+        private Node<U> prev;
+        private final U item;
+        private Node<U> next;
 
-        public Node(Node<T> p, T item, Node<T> n) {
+        public Node(Node<U> p, U item, Node<U> n) {
             this.prev = p;
             this.item = item;
             this.next = n;
