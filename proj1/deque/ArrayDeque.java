@@ -17,20 +17,40 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         arr = (T[]) new Object[8];
         this.size = 0;
-        this.nextFirst = 7;
-        this.nextLast = 0;
+        this.nextFirst = 3;
+        this.nextLast = 4;
     }
 
+
+    // When the nextFist = nextLast, what should we do?
     public void addFirst(T item) {
-        this.size++;
         arr[this.nextFirst] = item;
         this.nextFirst--;
+
+        if (this.nextFirst < 0) {
+            this.nextFirst += this.arr.length;
+        }
+
+        this.size++;
+
+        if (this.size() == arr.length) {
+            // resize;
+        }
     }
 
     public void addLast(T item) {
-        this.size++;
         arr[this.nextLast] = item;
         this.nextLast++;
+
+        if (this.nextLast > this.arr.length - 1) {
+            this.nextLast -= this.arr.length;
+        }
+
+        this.size++;
+
+        if (this.size() == arr.length) {
+            // resize;
+        }
     }
 
 
@@ -52,47 +72,56 @@ public class ArrayDeque<T> {
 
     public T removeFirst() {
         T removedItem = this.get(this.nextFirst + 1);
+        this.nextFirst++;
+
         this.size--;
         if (this.size() < 0) {
             this.size = 0;
         }
-        this.nextFirst = this.nextFirst + 1;
+
+        if (this.size() < arr.length * 0.25) {
+            // resize;
+        }
         return removedItem;
     }
 
     public T removeLast() {
+        T removedItem = this.get(this.nextLast - 1);
+        this.nextLast--;
+
         this.size--;
         if (this.size() < 0) {
             this.size = 0;
         }
-        this.nextLast--;
-        return this.get(this.nextLast);
 
+        if (this.size() < arr.length * 0.25) {
+            // resize;
+        }
+
+        return removedItem;
     }
 
     public T get(int index) {
-        if (this.size() == 0 || index < 0 || index > arr.length) {
+        if (this.size() == 0 || index < 0 || index > this.size() - 1) {
             return null;
         }
 
         int realIndex = this.nextFirst + 1 + index;
-        if (realIndex > this.arr.length - 1) {
-            realIndex -= this.arr.length;
-        }
+
         return this.arr[realIndex];
     }
 
 
-    public boolean equals(Object o) {
-        if (o instanceof ArrayDeque) {
-            for (int i = 0; i < this.size(); i++) {
-                if (((ArrayDeque<?>) o).get(i) == null || ((ArrayDeque<?>) o).get(i) != this.get(i)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
+//    public boolean equals(Object o) {
+//        if (o instanceof ArrayDeque) {
+//            for (int i = 0; i < this.size(); i++) {
+//                if (((ArrayDeque<?>) o).get(i) == null || ((ArrayDeque<?>) o).get(i) != this.get(i)) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
 
 }
