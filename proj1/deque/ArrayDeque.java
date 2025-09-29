@@ -73,6 +73,9 @@ public class ArrayDeque<T> {
     public T removeFirst() {
         T removedItem = this.get(this.nextFirst + 1);
         this.nextFirst++;
+        if (this.nextFirst > this.arr.length - 1) {
+            this.nextFirst -= this.arr.length;
+        }
 
         this.size--;
         if (this.size() < 0) {
@@ -88,6 +91,10 @@ public class ArrayDeque<T> {
     public T removeLast() {
         T removedItem = this.get(this.nextLast - 1);
         this.nextLast--;
+
+        if (this.nextLast < 0) {
+            this.nextLast += this.arr.length;
+        }
 
         this.size--;
         if (this.size() < 0) {

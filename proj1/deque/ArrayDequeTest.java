@@ -138,4 +138,26 @@ public class ArrayDequeTest {
 
         assertEquals(Integer.valueOf(8), ad.get(4));
     }
+
+    @Test
+    public void fillUpEmptyFillUpAgainUsingFirst() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 8; i++) {
+            ad.addFirst(i);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            ad.removeFirst();
+        }
+
+        for (int i = 0; i < 8; i++) {
+            ad.addFirst(i);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            assertEquals(Integer.valueOf(7 - i), ad.get(i));
+        }
+
+    }
 }
