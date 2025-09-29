@@ -108,6 +108,10 @@ public class ArrayDeque<T> {
 
         int realIndex = this.nextFirst + 1 + index;
 
+        if (realIndex >= this.arr.length) {
+            realIndex -= this.arr.length;
+        }
+
         return this.arr[realIndex];
     }
 

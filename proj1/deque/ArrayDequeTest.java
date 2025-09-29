@@ -125,4 +125,17 @@ public class ArrayDequeTest {
 
 
     }
+
+    @Test
+    public void addGetTest() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        ad.addLast(4);
+        ad.addLast(5);
+        ad.addLast(6);
+        ad.addLast(7);
+        ad.addLast(8);
+
+        assertEquals(Integer.valueOf(8), ad.get(4));
+    }
 }
