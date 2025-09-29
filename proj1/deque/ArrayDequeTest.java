@@ -25,7 +25,6 @@ public class ArrayDequeTest {
 //        ad.addLast(10);
 
 
-
         assertEquals(Integer.valueOf(0), ad.get(0));
         assertEquals(Integer.valueOf(1), ad.get(1));
         assertEquals(Integer.valueOf(2), ad.get(2));
@@ -96,6 +95,34 @@ public class ArrayDequeTest {
 //        assertEquals(Integer.valueOf(9), ad.get(2));
 //        assertEquals(Integer.valueOf(10), ad.get(1));
 //        assertEquals(Integer.valueOf(11), ad.get(0));
+
+    }
+
+
+    @Test
+    public void removeFirstBasicTest() {
+
+
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        ad.addFirst(0);
+        ad.addFirst(1);
+        ad.addFirst(2);
+        ad.addFirst(3);
+        ad.addFirst(4);
+        ad.addFirst(5);
+        ad.addFirst(6);
+        ad.addFirst(7);
+
+        assertEquals(Integer.valueOf(7), ad.removeFirst());
+        assertEquals(Integer.valueOf(6), ad.removeFirst());
+        assertEquals(Integer.valueOf(5), ad.removeFirst());
+        assertEquals(Integer.valueOf(4), ad.removeFirst());
+        assertEquals(Integer.valueOf(3), ad.removeFirst());
+        assertEquals(Integer.valueOf(2), ad.removeFirst());
+        assertEquals(Integer.valueOf(1), ad.removeFirst());
+        assertEquals(Integer.valueOf(0), ad.removeFirst());
+
 
     }
 }

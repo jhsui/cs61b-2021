@@ -146,12 +146,14 @@ public class ArrayDeque<T> {
 //            this.resize(arr.length / 2);
 //        }
 
+        T removedItem = this.get(this.nextFirst + 1);
+
         this.size--;
         if (this.size() < 0) {
             this.size = 0;
         }
-        this.nextFirst++;
-        return this.get(this.nextFirst);
+        this.nextFirst = this.nextFirst + 1;
+        return removedItem;
     }
 
     public T removeLast() {
