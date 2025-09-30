@@ -127,6 +127,35 @@ public class ArrayDequeTest {
     }
 
     @Test
+    public void removeLastBasicTest() {
+
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        ad.addLast(0);
+        ad.addLast(1);
+        ad.addLast(2);
+        ad.addLast(3);
+        ad.addLast(4);
+        ad.addLast(5);
+        ad.addLast(6);
+        ad.addLast(7);
+
+//        for (int i = 0; i < 8; i++) {
+//            assertEquals(Integer.valueOf(7 - i), ad.removeLast());
+//        }
+
+        assertEquals(Integer.valueOf(7), ad.removeLast());
+        assertEquals(Integer.valueOf(6), ad.removeLast());
+        assertEquals(Integer.valueOf(5), ad.removeLast());
+        assertEquals(Integer.valueOf(4), ad.removeLast());
+        assertEquals(Integer.valueOf(3), ad.removeLast());
+        assertEquals(Integer.valueOf(2), ad.removeLast());
+        assertEquals(Integer.valueOf(1), ad.removeLast());
+        assertEquals(Integer.valueOf(0), ad.removeLast());
+
+    }
+
+    @Test
     public void addGetTest() {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
 
@@ -160,4 +189,58 @@ public class ArrayDequeTest {
         }
 
     }
+
+    @Test
+    public void fillUpEmptyFillUpAgainUsingLast() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 8; i++) {
+            ad.addLast(i);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            ad.removeLast();
+        }
+
+        for (int i = 0; i < 8; i++) {
+            ad.addLast(i);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+    }
+
+    @Test
+    public void fillUpEmptyFillUpAgainUsingFirstAndLast() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 4; i++) {
+            ad.addFirst(3 - i);
+        }
+        for (int i = 4; i < 8; i++) {
+            ad.addLast(i);
+        }
+
+
+        for (int i = 0; i < 4; i++) {
+            ad.removeFirst();
+        }
+        for (int i = 0; i < 4; i++) {
+            ad.removeLast();
+        }
+
+        for (int i = 0; i < 4; i++) {
+            ad.addFirst(3 - i);
+        }
+        for (int i = 4; i < 8; i++) {
+            ad.addLast(i);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+    }
+
+
 }

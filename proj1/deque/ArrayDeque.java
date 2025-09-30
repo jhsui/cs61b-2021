@@ -71,7 +71,9 @@ public class ArrayDeque<T> {
 
 
     public T removeFirst() {
-        T removedItem = this.get(this.nextFirst + 1);
+        // nextFist + 1 is the actual location in the array, but here i should pass the index used by user.
+        T removedItem = this.get(0);
+
         this.nextFirst++;
         if (this.nextFirst > this.arr.length - 1) {
             this.nextFirst -= this.arr.length;
@@ -89,9 +91,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        T removedItem = this.get(this.nextLast - 1);
-        this.nextLast--;
+        T removedItem = this.get(this.size() - 1);
 
+        this.nextLast--;
         if (this.nextLast < 0) {
             this.nextLast += this.arr.length;
         }
