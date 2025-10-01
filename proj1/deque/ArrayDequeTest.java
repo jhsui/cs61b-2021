@@ -1,5 +1,6 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -188,18 +189,134 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void addLastTestAdd15() {
+    public void addLastTestAdd713() {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 713; i++) {
             ad.addLast(i);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 713; i++) {
             assertEquals(Integer.valueOf(i), ad.get(i));
         }
     }
 
+    @Test
+    public void addFirstTestAdd15() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 16; i++) {
+            ad.addFirst(i);
+        }
+
+        for (int i = 0; i < 16; i++) {
+            assertEquals(Integer.valueOf(15 - i), ad.get(i));
+        }
+    }
+
+    @Test
+    public void fillUpEmptyFillUpAgainUsingFirst16() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 16; i++) {
+            ad.addFirst(15 - i);
+        }
+        for (int i = 0; i < 16; i++) {
+            ad.removeFirst();
+        }
+
+        for (int i = 0; i < 16; i++) {
+            ad.addFirst(15 - i);
+        }
+        for (int i = 0; i < 16; i++) {
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+    }
+
+    @Test
+    public void fillUpUsingFirstEmptyFillUpUsingLastAgain16() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 16; i++) {
+            ad.addFirst(15 - i);
+        }
+        for (int i = 0; i < 16; i++) {
+            ad.removeFirst();
+        }
+
+        for (int i = 0; i < 16; i++) {
+            ad.addLast(i);
+        }
+        for (int i = 0; i < 16; i++) {
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+    }
+
+
+    @Test
+    public void randomizedAddLastTest() {
+
+        for (int j = 0; j < 10000; j++) {
+            ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+            int N = StdRandom.uniform(0, 100000);
+
+            for (int i = 0; i < N; i++) {
+                ad.addLast(i);
+            }
+
+            for (int i = 0; i < N; i++) {
+                assertEquals(Integer.valueOf(i), ad.get(i));
+            }
+        }
+
+    }
+
+    @Test
+    public void randomizedAddFirstTest() {
+        for (int j = 0; j < 10000; j++) {
+
+            ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+            int N = StdRandom.uniform(0, 100000);
+
+            for (int i = 0; i < N; i++) {
+                ad.addFirst(N - 1 - i);
+            }
+
+            for (int i = 0; i < N; i++) {
+                assertEquals(Integer.valueOf(i), ad.get(i));
+            }
+        }
+
+    }
+
+    @Test
+    public void randomizedFillUpUsingFirstEmptyFillUpUsingLastTest() {
+        for (int j = 0; j < 10000; j++) {
+
+            ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+            int N = StdRandom.uniform(0, 100000);
+
+            for (int i = 0; i < N; i++) {
+                ad.addFirst(N - 1 - i);
+            }
+
+            for (int i = 0; i < N; i++) {
+                ad.removeFirst();
+            }
+
+            for (int i = 0; i < N; i++) {
+                ad.addLast(i);
+            }
+
+            for (int i = 0; i < N; i++) {
+                assertEquals(Integer.valueOf(i), ad.get(i));
+            }
+        }
+
+    }
 
 
 }

@@ -46,9 +46,9 @@ public class ArrayDeque<T> {
 
 
         // restriction the other half? // firstLength and lastlength are both 0;
-        if (this.firstLength == 0) {
-            System.arraycopy(this.arr, this.firstLength, newArray, 0, this.lastLength);
-        } else if (this.lastLength == 0) {
+        if (this.firstLength == 0 && this.lastLength != 0) {
+            System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
+        } else if (this.lastLength == 0 && this.firstLength != 0) {
             // this.nextFirst + 1 is wrong,
             // why wrong?
             // because next first is incorrect. I need it to be 0; but it is 1 which is correct when the size does not change.
@@ -127,9 +127,9 @@ public class ArrayDeque<T> {
         arr[this.nextLast] = item;
 
         this.nextLast++;
-        if (this.nextLast > this.arr.length - 1) {
-            this.nextLast -= this.arr.length;
-        }
+//        if (this.nextLast > this.arr.length - 1) {
+//            this.nextLast -= this.size();
+//        }
 
         this.lastLength++;
 
@@ -205,7 +205,7 @@ public class ArrayDeque<T> {
 
         int realIndex = this.nextFirst + 1 + index;
 
-        if (realIndex >= this.arr.length) {
+        if (realIndex > this.arr.length - 1) {
             realIndex -= this.arr.length;
         }
 
