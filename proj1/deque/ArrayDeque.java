@@ -13,44 +13,90 @@ public class ArrayDeque<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
+    private int firstLength;
+    private int lastLength;
 
     public ArrayDeque() {
         arr = (T[]) new Object[8];
         this.size = 0;
-        this.nextFirst = 3;
-        this.nextLast = 4;
+
+        this.nextFirst = 7;
+        this.nextLast = 0;
+
+        this.firstLength = 0;
+        this.lastLength = 0;
     }
 
 
+    private void resize(int capacity) {
+        T[] newArray = (T[]) new Object[capacity];
+
+        if (this.firstLength < 0) {
+            this.lastLength += this.firstLength;
+            this.firstLength = 0;
+        } else if (this.lastLength < 0) {
+            this.firstLength += this.lastLength;
+            this.lastLength = 0;
+        }
+
+        // the only thing I can decide is where the new array at.
+
+        // now I put the array at the one fourth position.
+
+        // firstly, we copy the second half part.
+        System.arraycopy(this.arr, this.firstLength, newArray, 0, this.lastLength);
+        System.arraycopy(this.arr, this.lastLength + 1, newArray, newArray.length - this.firstLength, this.firstLength);
+
+        this.arr = newArray;
+
+        /* how to deal with the nextFirst and nextLast?
+         *
+         * 1. re-put them as the order of user array.
+         * 2. keep the original sequence.
+         *
+         * let us first think about big case:
+         *
+         * no matter what, it is a circular,
+         * so, I should put space between first and last;
+         *
+         * yes, let's first think about the case of size = 16.
+         */
+
+    }
+
     // When the nextFist = nextLast, what should we do?
     public void addFirst(T item) {
-        arr[this.nextFirst] = item;
-        this.nextFirst--;
+        if (this.size() == arr.length) {
+            this.resize(this.arr.length * 2);
+        }
 
+        arr[this.nextFirst] = item;
+
+        this.nextFirst--;
         if (this.nextFirst < 0) {
             this.nextFirst += this.arr.length;
         }
 
-        this.size++;
+        this.firstLength++;
 
-        if (this.size() == arr.length) {
-            // resize;
-        }
+        this.size++;
     }
 
     public void addLast(T item) {
-        arr[this.nextLast] = item;
-        this.nextLast++;
+        if (this.size() == arr.length) {
+            this.resize(this.arr.length * 2);
+        }
 
+        arr[this.nextLast] = item;
+
+        this.nextLast++;
         if (this.nextLast > this.arr.length - 1) {
             this.nextLast -= this.arr.length;
         }
 
-        this.size++;
+        this.lastLength++;
 
-        if (this.size() == arr.length) {
-            // resize;
-        }
+        this.size++;
     }
 
 
@@ -79,13 +125,15 @@ public class ArrayDeque<T> {
             this.nextFirst -= this.arr.length;
         }
 
+        this.firstLength--;
+
         this.size--;
         if (this.size() < 0) {
             this.size = 0;
         }
 
         if (this.size() < arr.length * 0.25) {
-            // resize;
+            this.resize(this.arr.length / 2);
         }
         return removedItem;
     }
@@ -98,13 +146,15 @@ public class ArrayDeque<T> {
             this.nextLast += this.arr.length;
         }
 
+        this.lastLength--;
+
         this.size--;
         if (this.size() < 0) {
             this.size = 0;
         }
 
         if (this.size() < arr.length * 0.25) {
-            // resize;
+            this.resize(this.arr.length / 2);
         }
 
         return removedItem;
@@ -115,7 +165,7 @@ public class ArrayDeque<T> {
             return null;
         }
 
-        int realIndex = this.nextFirst + 1 + index;
+        int realIndex = this.firstLength - 1 + index;
 
         if (realIndex >= this.arr.length) {
             realIndex -= this.arr.length;
