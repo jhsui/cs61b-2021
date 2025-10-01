@@ -292,7 +292,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void randomizedFillUpUsingFirstEmptyFillUpUsingLastTest() {
+    public void randomizedFillUpUsingFirstEmptyUsingLastFillUpUsingLastTest() {
         for (int j = 0; j < 10000; j++) {
 
             ArrayDeque<Integer> ad = new ArrayDeque<>();
@@ -303,8 +303,8 @@ public class ArrayDequeTest {
                 ad.addFirst(N - 1 - i);
             }
 
-            for (int i = 0; i < N; i++) {
-                ad.removeFirst();
+            for (int i = 0; i < 3 * N; i++) {
+                ad.removeLast();
             }
 
             for (int i = 0; i < N; i++) {
@@ -315,8 +315,49 @@ public class ArrayDequeTest {
                 assertEquals(Integer.valueOf(i), ad.get(i));
             }
         }
-
     }
 
+    @Test
+    public void randomizedFillUpUsingLastEmptyUsingFirstFillUpUsingFirstTest() {
+        for (int j = 0; j < 10000; j++) {
 
+            ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+            int N = StdRandom.uniform(0, 100000);
+
+            for (int i = 0; i < N; i++) {
+                ad.addLast(i);
+            }
+
+            for (int i = 0; i < 2 * N; i++) {
+                ad.removeFirst();
+            }
+
+            for (int i = 0; i < N; i++) {
+                ad.addFirst(N - 1 - i);
+            }
+
+            for (int i = 0; i < N; i++) {
+                assertEquals(Integer.valueOf(i), ad.get(i));
+            }
+        }
+    }
+
+    @Test
+    public void keepRemovingFirst() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 100; i++) {
+            ad.removeFirst();
+        }
+    }
+
+    @Test
+    public void keepRemovingLast() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        for (int i = 0; i < 100; i++) {
+            ad.removeLast();
+        }
+    }
 }

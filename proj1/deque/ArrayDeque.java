@@ -154,7 +154,10 @@ public class ArrayDeque<T> {
 
 
     public T removeFirst() {
-        // nextFist + 1 is the actual location in the array, but here i should pass the index used by user.
+        if (this.size() == 0) {
+            return null;
+        }
+        // nextFist + 1 is the actual location in the array, but here I should pass the index used by user.
         T removedItem = this.get(0);
 
         this.nextFirst++;
@@ -177,6 +180,10 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (this.size() == 0) {
+            return null;
+        }
+
         T removedItem = this.get(this.size() - 1);
 
         this.nextLast--;
