@@ -31,6 +31,7 @@ public class ArrayDeque<T> {
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
 
+
         if (this.firstLength < 0) {
             this.lastLength += this.firstLength;
             this.firstLength = 0;
@@ -43,9 +44,45 @@ public class ArrayDeque<T> {
 
         // now I put the array at the one fourth position.
 
+
+        // restriction the other half? // firstLength and lastlength are both 0;
+        if (this.firstLength == 0) {
+            System.arraycopy(this.arr, this.firstLength, newArray, 0, this.lastLength);
+        } else if (this.lastLength == 0) {
+            // this.nextFirst + 1 is wrong,
+            // why wrong?
+            // because next first is incorrect. I need it to be 0; but it is 1 which is correct when the size does not change.
+            // the 1 is coming from last addFirst, it became -1 and then added the arr.length, so it became 1.
+            // it jumped.
+            // what are other values here? the firstLength is 2 and lastLength is 0;
+            // the nextFirst passed is the old one, but I want the one without jumped.
+            int srcPos = this.nextFirst + 1;
+            if (srcPos >= this.arr.length) {
+                srcPos -= this.arr.length;
+            }
+            System.arraycopy(this.arr, srcPos, newArray, newArray.length - this.firstLength, this.firstLength);
+        } else {
+            // second half.
+            System.arraycopy(this.arr, this.firstLength, newArray, 0, this.lastLength);
+            // first half.
+            System.arraycopy(this.arr, this.lastLength + 1, newArray, newArray.length - this.firstLength, this.firstLength);
+
+        }
+
+
         // firstly, we copy the second half part.
-        System.arraycopy(this.arr, this.firstLength, newArray, 0, this.lastLength);
-        System.arraycopy(this.arr, this.lastLength + 1, newArray, newArray.length - this.firstLength, this.firstLength);
+
+        // we are copying the first half into the new array.
+        // I need to figure out the position in the original array.
+        // Is it lastLength+1?
+        // If the lastLength > 0, then yes, otherwise it is actually the negative firstLength.
+        // So, if it is <= 0, then I should just copy the other half. And the rest should be skipped.
+
+
+        // I did not null the original array, I need to make sure there is no removed element being copied to the newArray.
+
+        this.nextLast = this.lastLength;
+        this.nextFirst = newArray.length - this.firstLength - 1;
 
         this.arr = newArray;
 
@@ -125,6 +162,7 @@ public class ArrayDeque<T> {
             this.nextFirst -= this.arr.length;
         }
 
+
         this.firstLength--;
 
         this.size--;
@@ -165,7 +203,7 @@ public class ArrayDeque<T> {
             return null;
         }
 
-        int realIndex = this.firstLength - 1 + index;
+        int realIndex = this.nextFirst + 1 + index;
 
         if (realIndex >= this.arr.length) {
             realIndex -= this.arr.length;
