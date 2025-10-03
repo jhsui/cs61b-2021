@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Objects;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
 
     /*
      * We strongly recommend that you treat your array as circular for this exercise.
@@ -104,6 +104,7 @@ public class ArrayDeque<T> {
     }
 
     // When the nextFist = nextLast, what should we do?
+    @Override
     public void addFirst(T item) {
         if (this.size() == arr.length) {
             this.resize(this.arr.length * 2);
@@ -121,6 +122,7 @@ public class ArrayDeque<T> {
         this.size++;
     }
 
+    @Override
     public void addLast(T item) {
         if (this.size() == arr.length) {
             this.resize(this.arr.length * 2);
@@ -139,14 +141,13 @@ public class ArrayDeque<T> {
     }
 
 
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
-
+    @Override
     public int size() {
         return this.size;
     }
 
+
+    @Override
     public void printDeque() {
         for (T a : this.arr) {
             System.out.print(a.toString() + " ");
@@ -155,6 +156,7 @@ public class ArrayDeque<T> {
     }
 
 
+    @Override
     public T removeFirst() {
         if (this.size() == 0) {
             return null;
@@ -181,6 +183,8 @@ public class ArrayDeque<T> {
         return removedItem;
     }
 
+
+    @Override
     public T removeLast() {
         if (this.size() == 0) {
             return null;
@@ -207,6 +211,8 @@ public class ArrayDeque<T> {
         return removedItem;
     }
 
+
+    @Override
     public T get(int index) {
         if (this.size() == 0 || index < 0 || index > this.size() - 1) {
             return null;
@@ -220,6 +226,7 @@ public class ArrayDeque<T> {
 
         return this.arr[realIndex];
     }
+
 
     @Override
     public boolean equals(Object o) {

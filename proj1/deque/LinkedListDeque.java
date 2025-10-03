@@ -1,9 +1,7 @@
 package deque;
 
-import java.util.Iterator;
-
 //public class LinkedListDeque<T> implements Iterable<T> {
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
 
     private static class Node<U> {
 
@@ -47,7 +45,7 @@ public class LinkedListDeque<T> {
 //        this.size = 1;
 //    }
 
-    // item is never null.
+    @Override
     public void addFirst(T item) {
         Node<T> node = new Node<>(null, item, null);
 
@@ -64,7 +62,7 @@ public class LinkedListDeque<T> {
         this.size++;
     }
 
-    // item is never null.
+    @Override
     public void addLast(T item) {
         Node<T> node = new Node<>(null, item, null);
 
@@ -78,14 +76,12 @@ public class LinkedListDeque<T> {
     }
 
 
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
-
+    @Override
     public int size() {
         return this.size;
     }
 
+    @Override
     public void printDeque() {
         Node<T> node = this.sentinel.next;
         for (int i = 0; i < this.size(); i++) {
@@ -95,7 +91,7 @@ public class LinkedListDeque<T> {
         System.out.println();
     }
 
-    // if it doesn't exist, return null.
+    @Override
     public T removeFirst() {
         if (this.size() == 0) {
             return null;
@@ -107,7 +103,7 @@ public class LinkedListDeque<T> {
         return removedFirst.item;
     }
 
-    // if it doesn't exist, return null.
+    @Override
     public T removeLast() {
         if (this.size() == 0) {
             return null;
@@ -119,6 +115,7 @@ public class LinkedListDeque<T> {
         return removedLast.item;
     }
 
+    @Override
     public T get(int index) {
         if (index < 0 || index > this.size() - 1) {
             return null;
