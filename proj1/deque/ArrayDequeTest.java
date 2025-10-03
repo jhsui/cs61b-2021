@@ -360,4 +360,28 @@ public class ArrayDequeTest {
             ad.removeLast();
         }
     }
+
+    @Test
+    public void equalsTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        ArrayDeque<Integer> ad2 = new ArrayDeque<>();
+
+        int N = StdRandom.uniform(0, 1000);
+
+        for (int i = 0; i < N; i++) {
+            ad1.addLast(i);
+            ad2.addLast(i);
+        }
+
+        assertEquals(ad1, ad2);
+    }
+
+    @Test
+    public void IntegerEqualTest() {
+        Integer a = 128;
+        Integer b = 128;
+//        assertTrue(a == b);
+        System.out.println(a == b);
+    }
+
 }

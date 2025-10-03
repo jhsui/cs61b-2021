@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Objects;
+
 public class ArrayDeque<T> {
 
     /*
@@ -45,7 +47,7 @@ public class ArrayDeque<T> {
         // now I put the array at the one fourth position.
 
 
-        // restriction the other half? // firstLength and lastlength are both 0;
+        // restriction the other half? // firstLength and lastLength are both 0;
         if (this.firstLength == 0 && this.lastLength != 0) {
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
         } else if (this.lastLength == 0 && this.firstLength != 0) {
@@ -146,7 +148,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (T a : arr) {
+        for (T a : this.arr) {
             System.out.print(a.toString() + " ");
         }
         System.out.println();
@@ -219,17 +221,18 @@ public class ArrayDeque<T> {
         return this.arr[realIndex];
     }
 
-
-//    public boolean equals(Object o) {
-//        if (o instanceof ArrayDeque) {
-//            for (int i = 0; i < this.size(); i++) {
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof ArrayDeque) {
+            for (int i = 0; i < this.size(); i++) {
 //                if (((ArrayDeque<?>) o).get(i) == null || ((ArrayDeque<?>) o).get(i) != this.get(i)) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
+                if (!Objects.equals(((ArrayDeque<?>) o).get(i), this.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 
 }

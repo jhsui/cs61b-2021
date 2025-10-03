@@ -3,7 +3,6 @@ package deque;
 import java.util.Iterator;
 
 //public class LinkedListDeque<T> implements Iterable<T> {
-
 public class LinkedListDeque<T> {
 
     private static class Node<U> {
@@ -34,20 +33,19 @@ public class LinkedListDeque<T> {
 
     }
 
-    // Constructor
-    public LinkedListDeque(T item) {
-        this.sentinel = new Node<>(null, null, null);
-        Node<T> node = new Node<>(null, item, null);
-
-        this.sentinel.next = node;
-        node.prev = this.sentinel;
-
-        node.next = this.sentinel;
-        this.sentinel.prev = node;
-
-        this.size = 1;
-
-    }
+//    // Constructor
+//    public LinkedListDeque(T item) {
+//        this.sentinel = new Node<>(null, null, null);
+//        Node<T> node = new Node<>(null, item, null);
+//
+//        this.sentinel.next = node;
+//        node.prev = this.sentinel;
+//
+//        node.next = this.sentinel;
+//        this.sentinel.prev = node;
+//
+//        this.size = 1;
+//    }
 
     // item is never null.
     public void addFirst(T item) {
@@ -89,7 +87,6 @@ public class LinkedListDeque<T> {
     }
 
     public void printDeque() {
-
         Node<T> node = this.sentinel.next;
         for (int i = 0; i < this.size(); i++) {
             System.out.print(node.item.toString() + " ");
@@ -123,8 +120,6 @@ public class LinkedListDeque<T> {
     }
 
     public T get(int index) {
-
-
         if (index < 0 || index > this.size() - 1) {
             return null;
         }
@@ -143,31 +138,29 @@ public class LinkedListDeque<T> {
 
 
     // I don't know if it is correct or not!
-
-    //    @Override
-    public Iterator<T> iterator() {
-
-
-        return new Iterator<>() {
-
-            private Node<T> node = sentinel;
-
-
-            @Override
-            public boolean hasNext() {
-                return node.next != node.prev;
-            }
-
-
-            @Override
-            public T next() {
-                Node<T> currentNode = node.next; // we start from the first.
-                node = node.next;
-                return currentNode.item;
-            }
-
-        };
-    }
+//    @Override
+//    public Iterator<T> iterator() {
+//
+//        return new Iterator<>() {
+//
+//            private Node<T> node = sentinel;
+//
+//
+//            @Override
+//            public boolean hasNext() {
+//                return node.next != node.prev;
+//            }
+//
+//
+//            @Override
+//            public T next() {
+//                Node<T> currentNode = node.next; // we start from the first.
+//                node = node.next;
+//                return currentNode.item;
+//            }
+//
+//        };
+//    }
 
     public boolean equals(Object o) {
         if (o instanceof LinkedListDeque) {
@@ -183,9 +176,8 @@ public class LinkedListDeque<T> {
         return false;
     }
 
-    // Not correct yet.
+//    // Not correct yet.
 //    public T getRecursive(int index) {
-//
 //        if (this.size() == 0) {
 //            return null;
 //        }
@@ -195,18 +187,13 @@ public class LinkedListDeque<T> {
 //        }
 //
 //        // iterate from the first node.
-//        Node<T> node = this.sentinel.next;
-//
-//        int i = 0;
-//
-//        if (i == index) {
-//            return node.item;
+//        if (index == 0) {
+//            return (T) this.sentinel.next;
 //        } else {
-//            i += 1;
-//            node = node.next;
-//            return getRecursive(index);
+//            return this.next.getRecursive(index - 1);
 //        }
+//
+//        // helper class?
 //    }
-
 
 }
