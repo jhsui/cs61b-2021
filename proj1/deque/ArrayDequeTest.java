@@ -132,7 +132,7 @@ public class ArrayDequeTest {
             ad.addFirst(i);
         }
 
-        for (int i = 0; i < 8; i++) {
+        for (Integer i: ad) {
             assertEquals(Integer.valueOf(7 - i), ad.get(i));
         }
     }

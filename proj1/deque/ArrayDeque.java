@@ -1,8 +1,9 @@
 package deque;
 
+import java.util.Iterator;
 import java.util.Objects;
 
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     /*
      * We strongly recommend that you treat your array as circular for this exercise.
@@ -230,6 +231,11 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public boolean equals(Object o) {
+
+        if (this == o) {
+            return true;
+        }
+
         if (o instanceof ArrayDeque) {
             for (int i = 0; i < this.size(); i++) {
 //                if (((ArrayDeque<?>) o).get(i) == null || ((ArrayDeque<?>) o).get(i) != this.get(i)) {
@@ -241,5 +247,32 @@ public class ArrayDeque<T> implements Deque<T> {
         }
         return false;
     }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+
+        private int iteratorIndex;
+
+        public ArrayDequeIterator() {
+            this.iteratorIndex = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.iteratorIndex < size();
+        }
+
+        @Override
+        public T next() {
+            T next = get(iteratorIndex);
+            iteratorIndex += 1;
+            return next;
+        }
+    }
+
 
 }
