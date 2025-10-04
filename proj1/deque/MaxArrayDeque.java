@@ -5,9 +5,7 @@ import java.util.Comparator;
 
 public class MaxArrayDeque<T extends Comparable<? super T>> extends ArrayDeque<T> {
 
-
     Comparator<T> c;
-
 
     public MaxArrayDeque(Comparator<T> c) {
         this.c = c;
