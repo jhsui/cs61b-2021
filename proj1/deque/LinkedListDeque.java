@@ -168,14 +168,14 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             return true;
         }
 
-        if (o instanceof LinkedListDeque<?> lo) {
+        if (o instanceof LinkedListDeque) {
 
-            if (this.size() != lo.size()) {
+            if (this.size() != ((LinkedListDeque<?>) o).size()) {
                 return false;
             }
 
             for (int i = 0; i < this.size(); i++) {
-                if (!Objects.equals(lo.get(i), this.get(i))) {
+                if (!Objects.equals(((LinkedListDeque<?>) o).get(i), this.get(i))) {
                     return false;
                 }
             }
@@ -184,6 +184,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
         return false;
     }
+
 
 //    // Not correct yet.
 //    public T getRecursive(int index) {
