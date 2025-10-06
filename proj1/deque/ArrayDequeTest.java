@@ -132,7 +132,7 @@ public class ArrayDequeTest {
             ad.addFirst(i);
         }
 
-        for (Integer i: ad) {
+        for (Integer i : ad) {
             assertEquals(Integer.valueOf(7 - i), ad.get(i));
         }
     }
@@ -382,6 +382,25 @@ public class ArrayDequeTest {
         Integer b = 128;
 //        assertTrue(a == b);
         System.out.println(a == b);
+    }
+
+
+    @Test
+    public void randomAddSizeTest() {
+
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+
+        ad.size();
+        ad.addLast(1);
+        ad.addLast(2);
+        ad.addFirst(3);
+        ad.addLast(4);
+        ad.addFirst(5);
+        ad.size();
+        ad.addFirst(7);
+        ad.addFirst(8);
+        ad.addLast(9);
+        ad.addFirst(10);
     }
 
 }

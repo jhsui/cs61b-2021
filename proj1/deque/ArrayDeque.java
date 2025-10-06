@@ -66,9 +66,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             System.arraycopy(this.arr, srcPos, newArray, newArray.length - this.firstLength, this.firstLength);
         } else {
             // second half.
-            System.arraycopy(this.arr, this.firstLength, newArray, 0, this.lastLength);
+            System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
             // first half.
-            System.arraycopy(this.arr, this.lastLength + 1, newArray, newArray.length - this.firstLength, this.firstLength);
+            System.arraycopy(this.arr, this.lastLength , newArray, newArray.length - this.firstLength, this.firstLength);
 
         }
 
