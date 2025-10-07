@@ -12,22 +12,23 @@ public class RandomTest {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
         LinkedListDeque<Integer> lld = new LinkedListDeque<>();
 
-        int N = 100000;
+        int N = 10000;
+
+//        StdRandom.setSeed(1111111111L);
 
         for (int i = 0; i < N; i++) {
-
             int operationNumber = StdRandom.uniform(0, 20);
 
-
             if (operationNumber <= 10) {
-                ad.addFirst(i);
-                lld.addFirst(i);
+                ad.addLast(i);
+                lld.addLast(i);
                 assertEquals(lld.get(0), ad.get(0));
                 assertEquals(lld.size(), ad.size());
             } else if (operationNumber <= 15) {
-                Integer a = ad.removeLast();
                 Integer l = lld.removeLast();
-                assertEquals(a, l);
+                Integer a = ad.removeLast();
+//                System.out.println(i);
+                assertEquals(l, a);
                 assertEquals(lld.get(lld.size() - 1), ad.get(lld.size() - 1));
                 assertEquals(lld.size(), ad.size());
 

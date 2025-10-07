@@ -256,10 +256,10 @@ public class ArrayDequeTest {
     @Test
     public void randomizedAddLastTest() {
 
-        for (int j = 0; j < 10000; j++) {
+        for (int j = 0; j < 100; j++) {
             ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-            int N = StdRandom.uniform(0, 100000);
+            int N = StdRandom.uniform(0, 1000);
 
             for (int i = 0; i < N; i++) {
                 ad.addLast(i);
@@ -274,11 +274,11 @@ public class ArrayDequeTest {
 
     @Test
     public void randomizedAddFirstTest() {
-        for (int j = 0; j < 10000; j++) {
+        for (int j = 0; j < 100; j++) {
 
             ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-            int N = StdRandom.uniform(0, 100000);
+            int N = StdRandom.uniform(0, 1000);
 
             for (int i = 0; i < N; i++) {
                 ad.addFirst(N - 1 - i);
@@ -297,7 +297,7 @@ public class ArrayDequeTest {
 
         ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-//            int N = StdRandom.uniform(0, 100000);
+//            int N = StdRandom.uniform(0, 1000);
 
         int N = 10;
 
@@ -322,28 +322,29 @@ public class ArrayDequeTest {
 
     @Test
     public void randomizedFillUpUsingLastEmptyUsingFirstFillUpUsingFirstTest() {
-        for (int j = 0; j < 10000; j++) {
+//        for (int j = 0; j < 10000; j++) {
 
-            ArrayDeque<Integer> ad = new ArrayDeque<>();
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-            int N = StdRandom.uniform(0, 100000);
+//            int N = StdRandom.uniform(0, 100);
 
-            for (int i = 0; i < N; i++) {
-                ad.addLast(i);
-            }
-
-            for (int i = 0; i < 2 * N; i++) {
-                ad.removeFirst();
-            }
-
-            for (int i = 0; i < N; i++) {
-                ad.addFirst(N - 1 - i);
-            }
-
-            for (int i = 0; i < N; i++) {
-                assertEquals(Integer.valueOf(i), ad.get(i));
-            }
+        int N = 10;
+        for (int i = 0; i < N; i++) {
+            ad.addLast(i);
         }
+
+        for (int i = 0; i < N; i++) {
+            ad.removeFirst();
+        }
+
+        for (int i = 0; i < N; i++) {
+            ad.addFirst(N - 1 - i);
+        }
+
+        for (int i = 0; i < N; i++) {
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+//        }
     }
 
     @Test

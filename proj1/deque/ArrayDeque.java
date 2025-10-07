@@ -47,11 +47,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
         // restriction the other half? // firstLength and lastLength are both 0;
-        if (this.firstLength == 0 && this.lastLength != 0) {
+        if (this.firstLength == 0 && this.lastLength != 0 && this.lastLength < this.arr.length) {
 
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
 
-        } else if (this.lastLength == 0 && this.firstLength != 0) {
+        } else if (this.lastLength == 0 && this.firstLength != 0 && this.firstLength < this.arr.length) {
             // this.nextFirst + 1 is wrong,
             // why wrong?
             // because next first is incorrect. I need it to be 0; but it is 1 which is correct when the size does not change.
@@ -64,12 +64,13 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             if (srcPos >= this.arr.length) {
                 srcPos -= this.arr.length;
             }
+            // first length is just the total size, so array copy can not execucate
             System.arraycopy(this.arr, srcPos, newArray, newArray.length - this.firstLength, this.firstLength);
 
         } else {
-            // second half.
+            // second half
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
-            // first half.
+            // first half
             System.arraycopy(this.arr, this.lastLength, newArray, newArray.length - this.firstLength, this.firstLength);
 
         }
@@ -107,12 +108,13 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         arr[this.nextFirst] = item;
 
+        this.firstLength++;
+
         this.nextFirst--;
         if (this.nextFirst < 0) {
             this.nextFirst += this.arr.length;
         }
 
-        this.firstLength++;
 
         this.size++;
     }
@@ -163,18 +165,25 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         // nextFist + 1 is the actual location in the array, but here I should pass the index used by user.
         T removedItem = this.get(0);
 
+        this.firstLength--;
+
         this.nextFirst++;
+        if (this.nextFirst > this.arr.length - 1 && this.firstLength < 0) {
+            this.nextFirst = this.nextFirst - this.arr.length;
+        }
         if (this.nextFirst > this.arr.length - 1) {
-            this.nextFirst -= this.arr.length;
+            this.nextFirst = this.firstLength + 1 - this.arr.length;
         }
 
 
-        this.firstLength--;
-
         this.size--;
+//        if (this.size() == 0) {
+//            this.nextLast--;
+//        }
         if (this.size() < 0) {
             this.size = 0;
         }
+
 
         if (this.size() <= arr.length * 0.25 && arr.length > 8) {
             this.resize(this.arr.length / 2);
@@ -191,14 +200,23 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         T removedItem = this.get(this.size() - 1);
 
-        this.nextLast--;
-        if (this.nextLast < 0) {
-            this.nextLast += this.arr.length;
-        }
+//        this.nextLast--;
+//        if (this.nextLast < 0) {
+//            this.nextLast += this.arr.length;
+//        }
 
         this.lastLength--;
 
+        this.nextLast--;
+        if (this.nextLast < 0) {
+            this.nextLast = this.arr.length + this.lastLength;
+        }
+
         this.size--;
+        // when the item is the last one! aka when nextLast == nextFirst
+//        if (this.size() == 0) {
+//            this.nextFirst--;
+//        }
 
 
         if (this.size() <= arr.length * 0.25 && arr.length > 8) {
