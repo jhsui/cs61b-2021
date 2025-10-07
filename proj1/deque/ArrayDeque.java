@@ -45,12 +45,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         // the only thing I can decide is where the new array at.
 
-        // now I put the array at the one fourth position.
-
 
         // restriction the other half? // firstLength and lastLength are both 0;
         if (this.firstLength == 0 && this.lastLength != 0) {
+
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
+
         } else if (this.lastLength == 0 && this.firstLength != 0) {
             // this.nextFirst + 1 is wrong,
             // why wrong?
@@ -59,33 +59,27 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             // it jumped.
             // what are other values here? the firstLength is 2 and lastLength is 0;
             // the nextFirst passed is the old one, but I want the one without jumped.
+
             int srcPos = this.nextFirst + 1;
             if (srcPos >= this.arr.length) {
                 srcPos -= this.arr.length;
             }
             System.arraycopy(this.arr, srcPos, newArray, newArray.length - this.firstLength, this.firstLength);
+
         } else {
             // second half.
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
             // first half.
-            System.arraycopy(this.arr, this.lastLength , newArray, newArray.length - this.firstLength, this.firstLength);
+            System.arraycopy(this.arr, this.lastLength, newArray, newArray.length - this.firstLength, this.firstLength);
 
         }
 
 
-        // firstly, we copy the second half part.
-
-        // we are copying the first half into the new array.
-        // I need to figure out the position in the original array.
-        // Is it lastLength+1?
-        // If the lastLength > 0, then yes, otherwise it is actually the negative firstLength.
-        // So, if it is <= 0, then I should just copy the other half. And the rest should be skipped.
-
-
-        // I did not null the original array, I need to make sure there is no removed element being copied to the newArray.
-
         this.nextLast = this.lastLength;
         this.nextFirst = newArray.length - this.firstLength - 1;
+        if (this.nextFirst < 0) {
+            this.nextFirst = 0;
+        }
 
         this.arr = newArray;
 
@@ -127,6 +121,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     public void addLast(T item) {
         if (this.size() == arr.length) {
             this.resize(this.arr.length * 2);
+        }
+
+        if (this.nextLast > this.arr.length - 1) {
+            this.nextLast -= this.arr.length;
         }
 
         arr[this.nextLast] = item;
@@ -178,7 +176,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             this.size = 0;
         }
 
-        if (this.size() < arr.length * 0.25) {
+        if (this.size() <= arr.length * 0.25 && arr.length > 8) {
             this.resize(this.arr.length / 2);
         }
         return removedItem;
@@ -201,11 +199,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         this.lastLength--;
 
         this.size--;
-        if (this.size() < 0) {
-            this.size = 0;
-        }
 
-        if (this.size() < arr.length * 0.25) {
+
+        if (this.size() <= arr.length * 0.25 && arr.length > 8) {
             this.resize(this.arr.length / 2);
         }
 

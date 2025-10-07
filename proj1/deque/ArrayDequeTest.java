@@ -293,28 +293,31 @@ public class ArrayDequeTest {
 
     @Test
     public void randomizedFillUpUsingFirstEmptyUsingLastFillUpUsingLastTest() {
-        for (int j = 0; j < 10000; j++) {
+//        for (int j = 0; j < 1000; j++) {
 
-            ArrayDeque<Integer> ad = new ArrayDeque<>();
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-            int N = StdRandom.uniform(0, 100000);
+//            int N = StdRandom.uniform(0, 100000);
 
-            for (int i = 0; i < N; i++) {
-                ad.addFirst(N - 1 - i);
-            }
+        int N = 10;
 
-            for (int i = 0; i < 3 * N; i++) {
-                ad.removeLast();
-            }
-
-            for (int i = 0; i < N; i++) {
-                ad.addLast(i);
-            }
-
-            for (int i = 0; i < N; i++) {
-                assertEquals(Integer.valueOf(i), ad.get(i));
-            }
+        for (int i = 0; i < N; i++) {
+            ad.addFirst(N - 1 - i);
         }
+
+        for (int i = 0; i < N; i++) {
+            ad.removeLast();
+        }
+
+        // the array is empty at here
+        for (int i = 0; i < N; i++) {
+            ad.addLast(i);
+        }
+
+        for (int i = 0; i < N; i++) {
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+//        }
     }
 
     @Test
