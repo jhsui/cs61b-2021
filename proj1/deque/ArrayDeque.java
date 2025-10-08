@@ -18,6 +18,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int nextLast;
     private int firstLength;
     private int lastLength;
+    private int trueFirst;
 
     public ArrayDeque() {
         arr = (T[]) new Object[8];
@@ -28,6 +29,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         this.firstLength = 0;
         this.lastLength = 0;
+
+
     }
 
 
@@ -45,29 +48,21 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         // the only thing I can decide is where the new array at.
 
-
-        // restriction the other half? // firstLength and lastLength are both 0;
         if (this.firstLength == 0 && this.lastLength != 0 && this.lastLength < this.arr.length) {
 
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
 
         } else if (this.lastLength == 0 && this.firstLength != 0 && this.firstLength < this.arr.length) {
-            // this.nextFirst + 1 is wrong,
-            // why wrong?
-            // because next first is incorrect. I need it to be 0; but it is 1 which is correct when the size does not change.
-            // the 1 is coming from last addFirst, it became -1 and then added the arr.length, so it became 1.
-            // it jumped.
-            // what are other values here? the firstLength is 2 and lastLength is 0;
-            // the nextFirst passed is the old one, but I want the one without jumped.
+
 
             int srcPos = this.nextFirst + 1;
             if (srcPos >= this.arr.length) {
                 srcPos -= this.arr.length;
             }
-            // first length is just the total size, so array copy can not execucate
             System.arraycopy(this.arr, srcPos, newArray, newArray.length - this.firstLength, this.firstLength);
 
         } else {
+
             // second half
             System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
             // first half
@@ -117,6 +112,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
         this.size++;
+        this.trueFirst--;
+        if(this.trueFirst<0){
+            this.trueFirst += this.arr.length;
+        }
     }
 
     @Override
@@ -233,8 +232,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
+        // here happened a jump because of the size became equal to the arr.length.
         int realIndex = this.nextFirst + 1 + index;
 
+        // is here correct?
         if (realIndex > this.arr.length - 1) {
             realIndex -= this.arr.length;
         }
