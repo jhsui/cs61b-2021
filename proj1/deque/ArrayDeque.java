@@ -16,20 +16,17 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
-    private int firstLength;
-    private int lastLength;
-    private int trueFirst;
+    private int firstPartInTheSecondHalf;
+
 
     public ArrayDeque() {
         arr = (T[]) new Object[8];
         this.size = 0;
 
-        this.nextFirst = 7;
-        this.nextLast = 0;
+        this.nextFirst = 3;
+        this.nextLast = 4;
 
-        this.firstLength = 0;
-        this.lastLength = 0;
-
+        this.firstPartInTheSecondHalf = 0;
 
     }
 
@@ -37,64 +34,19 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
 
-
-        if (this.firstLength < 0) {
-            this.lastLength += this.firstLength;
-            this.firstLength = 0;
-        } else if (this.lastLength < 0) {
-            this.firstLength += this.lastLength;
-            this.lastLength = 0;
-        }
-
-        // the only thing I can decide is where the new array at.
-
-        if (this.firstLength == 0 && this.lastLength != 0 && this.lastLength < this.arr.length) {
-
-            System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
-
-        } else if (this.lastLength == 0 && this.firstLength != 0 && this.firstLength < this.arr.length) {
-
-
-            int srcPos = this.nextFirst + 1;
-            if (srcPos >= this.arr.length) {
-                srcPos -= this.arr.length;
-            }
-            System.arraycopy(this.arr, srcPos, newArray, newArray.length - this.firstLength, this.firstLength);
+        if (this.firstPartInTheSecondHalf == 0) {
+            System.arraycopy(this.arr, this.nextFirst + 1, newArray, newArray.length / 4, this.arr.length);
 
         } else {
-
-            // second half
-            System.arraycopy(this.arr, 0, newArray, 0, this.lastLength);
-            // first half
-            System.arraycopy(this.arr, this.lastLength, newArray, newArray.length - this.firstLength, this.firstLength);
+            for(int i = 0; i <= this.firstPartInTheSecondHalf; i++){
+                newArray[]
+            }
 
         }
 
-
-        this.nextLast = this.lastLength;
-        this.nextFirst = newArray.length - this.firstLength - 1;
-        if (this.nextFirst < 0) {
-            this.nextFirst = 0;
-        }
-
-        this.arr = newArray;
-
-        /* how to deal with the nextFirst and nextLast?
-         *
-         * 1. re-put them as the order of user array.
-         * 2. keep the original sequence.
-         *
-         * let us first think about big case:
-         *
-         * no matter what, it is a circular,
-         * so, I should put space between first and last;
-         *
-         * yes, let's first think about the case of size = 16.
-         */
 
     }
 
-    // When the nextFist = nextLast, what should we do?
     @Override
     public void addFirst(T item) {
         if (this.size() == arr.length) {
@@ -103,19 +55,16 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         arr[this.nextFirst] = item;
 
-        this.firstLength++;
-
         this.nextFirst--;
         if (this.nextFirst < 0) {
             this.nextFirst += this.arr.length;
         }
 
+        if (this.nextFirst > this.arr.length * 1.0 / 2) {
+            this.firstPartInTheSecondHalf += 1;
+        }
 
         this.size++;
-        this.trueFirst--;
-        if(this.trueFirst<0){
-            this.trueFirst += this.arr.length;
-        }
     }
 
     @Override
@@ -124,18 +73,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             this.resize(this.arr.length * 2);
         }
 
-        if (this.nextLast > this.arr.length - 1) {
-            this.nextLast -= this.arr.length;
-        }
-
         arr[this.nextLast] = item;
 
         this.nextLast++;
-//        if (this.nextLast > this.arr.length - 1) {
-//            this.nextLast -= this.size();
-//        }
-
-        this.lastLength++;
+        if (this.nextLast > this.arr.length - 1) {
+            this.nextLast -= this.arr.length;
+        }
 
         this.size++;
     }
@@ -161,32 +104,23 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (this.size() == 0) {
             return null;
         }
-        // nextFist + 1 is the actual location in the array, but here I should pass the index used by user.
+
         T removedItem = this.get(0);
 
-        this.firstLength--;
-
         this.nextFirst++;
-        if (this.nextFirst > this.arr.length - 1 && this.firstLength < 0) {
-            this.nextFirst = this.nextFirst - this.arr.length;
-        }
-        if (this.nextFirst > this.arr.length - 1) {
-            this.nextFirst = this.firstLength + 1 - this.arr.length;
-        }
-
 
         this.size--;
-//        if (this.size() == 0) {
-//            this.nextLast--;
-//        }
         if (this.size() < 0) {
             this.size = 0;
         }
-
-
         if (this.size() <= arr.length * 0.25 && arr.length > 8) {
             this.resize(this.arr.length / 2);
         }
+
+        if (this.nextFirst > this.arr.length * 1.0 / 2) {
+            this.firstPartInTheSecondHalf -= 1;
+        }
+
         return removedItem;
     }
 
@@ -199,24 +133,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         T removedItem = this.get(this.size() - 1);
 
-//        this.nextLast--;
-//        if (this.nextLast < 0) {
-//            this.nextLast += this.arr.length;
-//        }
-
-        this.lastLength--;
-
         this.nextLast--;
-        if (this.nextLast < 0) {
-            this.nextLast = this.arr.length + this.lastLength;
-        }
 
         this.size--;
-        // when the item is the last one! aka when nextLast == nextFirst
-//        if (this.size() == 0) {
-//            this.nextFirst--;
-//        }
-
 
         if (this.size() <= arr.length * 0.25 && arr.length > 8) {
             this.resize(this.arr.length / 2);
@@ -232,10 +151,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
-        // here happened a jump because of the size became equal to the arr.length.
         int realIndex = this.nextFirst + 1 + index;
 
-        // is here correct?
         if (realIndex > this.arr.length - 1) {
             realIndex -= this.arr.length;
         }
