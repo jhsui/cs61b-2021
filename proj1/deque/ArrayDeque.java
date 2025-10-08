@@ -18,7 +18,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int nextLast;
     private int firstLength;
     private int lastLength;
-    private int trueFirst;
+//    private int trueFirst;
 
     public ArrayDeque() {
         arr = (T[]) new Object[8];
@@ -33,7 +33,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     }
 
-
+    // the problem I ignore is that the new copied arr in the newArray may be in sequence
+    // if the operation is just add one side and remove another side.
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
 
@@ -112,10 +113,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
         this.size++;
-        this.trueFirst--;
-        if(this.trueFirst<0){
-            this.trueFirst += this.arr.length;
-        }
     }
 
     @Override
