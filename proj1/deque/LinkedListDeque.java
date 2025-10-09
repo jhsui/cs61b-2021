@@ -163,21 +163,21 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 //
 //        };
 //    }
-
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) {
             return true;
         }
 
-        if (o instanceof LinkedListDeque) {
+        if (o instanceof Deque) {
 
-            if (this.size() != ((LinkedListDeque<?>) o).size()) {
+            if (this.size() != ((Deque<?>) o).size()) {
                 return false;
             }
 
             for (int i = 0; i < this.size(); i++) {
-                if (!Objects.equals(((LinkedListDeque<?>) o).get(i), this.get(i))) {
+                if (!Objects.equals(((Deque<?>) o).get(i), this.get(i))) {
                     return false;
                 }
             }
@@ -188,8 +188,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
 
-//    // Not correct yet.
-//    public T getRecursive(int index) {
+    //    // Not correct yet.
+    public T getRecursive(int index) {
 //        if (this.size() == 0) {
 //            return null;
 //        }
@@ -204,9 +204,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 //        } else {
 //            return this.next.getRecursive(index - 1);
 //        }
-//
-//        // helper class?
-//    }
+
+        // helper class?
+        return null;
+    }
 
     @Override
     public Iterator<T> iterator() {

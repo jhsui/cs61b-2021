@@ -115,7 +115,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
 
 
-
         arr[this.nextLast] = item;
 
         this.nextLast++;
@@ -219,12 +218,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return true;
         }
 
-        if (o instanceof ArrayDeque) {
-            if (this.size() != ((ArrayDeque<?>) o).size()) {
+        if (o instanceof Deque) {
+            if (this.size() != ((Deque<?>) o).size()) {
                 return false;
             }
             for (int i = 0; i < this.size(); i++) {
-                if (!Objects.equals(((ArrayDeque<?>) o).get(i), this.get(i))) {
+                if (!Objects.equals(((Deque<?>) o).get(i), this.get(i))) {
                     return false;
                 }
             }
