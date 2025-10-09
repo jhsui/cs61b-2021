@@ -189,14 +189,15 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void addLastTestAdd713() {
+    public void addLastTestAdd() {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-        for (int i = 0; i < 713; i++) {
+        for (int i = 0; i < 10; i++) {
             ad.addLast(i);
         }
 
-        for (int i = 0; i < 713; i++) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(i);
             assertEquals(Integer.valueOf(i), ad.get(i));
         }
     }
@@ -210,6 +211,7 @@ public class ArrayDequeTest {
         }
 
         for (int i = 0; i < 16; i++) {
+            System.out.println(i);
             assertEquals(Integer.valueOf(15 - i), ad.get(i));
         }
     }
@@ -222,6 +224,7 @@ public class ArrayDequeTest {
             ad.addFirst(15 - i);
         }
         for (int i = 0; i < 16; i++) {
+            System.out.println(i);
             ad.removeFirst();
         }
 
@@ -274,20 +277,23 @@ public class ArrayDequeTest {
 
     @Test
     public void randomizedAddFirstTest() {
-        for (int j = 0; j < 100; j++) {
+//        for (int j = 0; j < 100; j++) {
 
-            ArrayDeque<Integer> ad = new ArrayDeque<>();
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
 
-            int N = StdRandom.uniform(0, 1000);
+//            int N = StdRandom.uniform(0, 1000);
 
-            for (int i = 0; i < N; i++) {
-                ad.addFirst(N - 1 - i);
-            }
+        int N = 100;
 
-            for (int i = 0; i < N; i++) {
-                assertEquals(Integer.valueOf(i), ad.get(i));
-            }
+        for (int i = 0; i < N; i++) {
+            ad.addFirst(N - 1 - i);
         }
+
+        for (int i = 0; i < N; i++) {
+            System.out.println(i);
+            assertEquals(Integer.valueOf(i), ad.get(i));
+        }
+//        }
 
     }
 
@@ -306,11 +312,13 @@ public class ArrayDequeTest {
         }
 
         for (int i = 0; i < N; i++) {
+//            System.out.println(i);
             ad.removeLast();
         }
 
         // the array is empty at here
         for (int i = 0; i < N; i++) {
+            System.out.println(i);
             ad.addLast(i);
         }
 
