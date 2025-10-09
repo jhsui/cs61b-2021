@@ -55,10 +55,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             }
 
             if (this.nextFirst < this.nextLast) {
-                System.arraycopy(this.arr, this.nextFirst + 1, newArray, Math.abs((this.arr.length - this.nextFirst) - newArray.length - 1), this.size());
+                System.arraycopy(this.arr, this.nextFirst + 1, newArray, newArray.length - (this.nextLast - this.nextFirst) + 1, this.size());
 
-                this.nextLast = this.nextLast - newArray.length;
-                this.nextFirst = this.nextFirst;
+                this.nextFirst = newArray.length - (this.nextLast - this.nextFirst);
+                this.nextLast = 0;
             }
 
 
@@ -114,14 +114,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             this.resize(this.arr.length * 2);
         }
 
-        if (this.nextLast > this.arr.length - 1) {
-            this.nextLast -= this.arr.length;
-        }
+
 
         arr[this.nextLast] = item;
 
         this.nextLast++;
-
+        if (this.nextLast > this.arr.length - 1) {
+            this.nextLast -= this.arr.length;
+        }
         this.size++;
     }
 
@@ -150,7 +150,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
         this.nextFirst++;
-        if (this.nextFirst > this.arr.length) {
+        if (this.nextFirst > this.arr.length - 1) {
             this.nextFirst = this.nextFirst - this.arr.length;
         }
 
