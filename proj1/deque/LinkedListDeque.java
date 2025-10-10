@@ -19,7 +19,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             this.next = n;
         }
 
-        public U getItem(int index) {
+        private U getItem(int index) {
             if (index == 0) {
                 return this.item;
             }
