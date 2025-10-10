@@ -41,7 +41,8 @@ public class RandomTest {
         }
     }
 
-    // I think I figured out the reason. It is because that when I was going to copy the array when the size was full.
+    // I think I figured out the reason. It is because that when I was going to copy the array
+    // when the size was full.
     // I just copied it. without considering the sequence.
     // Now when I am going to copy, I just o
     @Test
@@ -100,14 +101,14 @@ public class RandomTest {
         for (int i = 0; i < N; i++) {
             int operationNumber = StdRandom.uniform(0, 20);
 
-            if (operationNumber <= 3) {
+            if (operationNumber <= 4) {
 //                System.out.println("add last: " + i);
                 lld.addLast(i);
                 ad.addLast(i);
 
                 assertEquals(lld.get(lld.size() - 1), ad.get(ad.size() - 1));
                 assertEquals(lld.size(), ad.size());
-            } else if (operationNumber <= 7) {
+            } else if (operationNumber <= 6) {
 //                System.out.println("remove first: " + i);
 
                 Integer l = lld.removeFirst();
@@ -123,7 +124,7 @@ public class RandomTest {
                 assertEquals(lld.get(0), ad.get(0));
                 assertEquals(lld.size(), ad.size());
 
-            } else if (operationNumber <= 15) {
+            } else if (operationNumber <= 13) {
 //                System.out.println("remove last: " + i);
 
                 Integer l = lld.removeLast();

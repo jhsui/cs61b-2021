@@ -36,7 +36,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         if (capacity > this.arr.length) {
             // first half
-            System.arraycopy(this.arr, this.nextFirst, newArray, newArray.length - (this.arr.length - this.nextFirst), this.arr.length - this.nextFirst);
+            System.arraycopy(this.arr, this.nextFirst, newArray,
+                    newArray.length - (this.arr.length - this.nextFirst),
+                    this.arr.length - this.nextFirst);
 
             // second half
             System.arraycopy(this.arr, 0, newArray, 0, this.nextFirst + 1);
@@ -47,7 +49,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         if (capacity < this.arr.length) {
             if (this.nextFirst > this.nextLast) {
-                System.arraycopy(this.arr, this.nextFirst + 1, newArray, Math.abs((this.arr.length - this.nextFirst) - newArray.length - 1), this.arr.length - 1 - this.nextFirst);
+                System.arraycopy(this.arr, this.nextFirst + 1, newArray,
+                        Math.abs((this.arr.length - this.nextFirst) - newArray.length - 1),
+                        this.arr.length - 1 - this.nextFirst);
                 System.arraycopy(this.arr, 0, newArray, 0, this.nextLast);
 
                 this.nextLast = this.nextLast;
@@ -55,7 +59,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             }
 
             if (this.nextFirst < this.nextLast) {
-                System.arraycopy(this.arr, this.nextFirst + 1, newArray, newArray.length - (this.nextLast - this.nextFirst) + 1, this.size());
+                System.arraycopy(this.arr, this.nextFirst + 1, newArray,
+                        newArray.length - (this.nextLast - this.nextFirst) + 1, this.size());
 
                 this.nextFirst = newArray.length - (this.nextLast - this.nextFirst);
                 this.nextLast = 0;
@@ -242,7 +247,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         private int iteratorIndex;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             this.iteratorIndex = 0;
         }
 
