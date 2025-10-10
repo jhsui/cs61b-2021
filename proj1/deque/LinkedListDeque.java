@@ -3,7 +3,6 @@ package deque;
 import java.util.Iterator;
 import java.util.Objects;
 
-//public class LinkedListDeque<T> implements Iterable<T> {
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     private static class Node<U> {
@@ -14,10 +13,17 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         private final U item;
         private Node<U> next;
 
-        public Node(Node<U> p, U item, Node<U> n) {
+        Node(Node<U> p, U item, Node<U> n) {
             this.prev = p;
             this.item = item;
             this.next = n;
+        }
+
+        private U getItem(int index) {
+            if (index == 0) {
+                return this.item;
+            }
+            return this.next.getItem(index - 1);
         }
     }
 
@@ -34,19 +40,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     }
 
-//    // Constructor
-//    public LinkedListDeque(T item) {
-//        this.sentinel = new Node<>(null, null, null);
-//        Node<T> node = new Node<>(null, item, null);
-//
-//        this.sentinel.next = node;
-//        node.prev = this.sentinel;
-//
-//        node.next = this.sentinel;
-//        this.sentinel.prev = node;
-//
-//        this.size = 1;
-//    }
 
     @Override
     public void addFirst(T item) {
@@ -139,45 +132,21 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
 
-    // I don't know if it is correct or not!
-//    @Override
-//    public Iterator<T> iterator() {
-//
-//        return new Iterator<>() {
-//
-//            private Node<T> node = sentinel;
-//
-//
-//            @Override
-//            public boolean hasNext() {
-//                return node.next != node.prev;
-//            }
-//
-//
-//            @Override
-//            public T next() {
-//                Node<T> currentNode = node.next; // we start from the first.
-//                node = node.next;
-//                return currentNode.item;
-//            }
-//
-//        };
-//    }
-
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) {
             return true;
         }
 
-        if (o instanceof LinkedListDeque) {
+        if (o instanceof Deque) {
 
-            if (this.size() != ((LinkedListDeque<?>) o).size()) {
+            if (this.size() != ((Deque<?>) o).size()) {
                 return false;
             }
 
             for (int i = 0; i < this.size(); i++) {
-                if (!Objects.equals(((LinkedListDeque<?>) o).get(i), this.get(i))) {
+                if (!Objects.equals(((Deque<?>) o).get(i), this.get(i))) {
                     return false;
                 }
             }
@@ -188,25 +157,27 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
 
-//    // Not correct yet.
-//    public T getRecursive(int index) {
-//        if (this.size() == 0) {
-//            return null;
-//        }
+    public T getRecursive(int index) {
+        if (this.size() == 0) {
+            return null;
+        }
+
+        if (index < 0 || index > this.size() - 1) {
+            return null;
+        }
+
+//        Node<T> n = this.sentinel.next;
 //
-//        if (index < 0 || index > this.size() - 1) {
-//            return null;
-//        }
-//
-//        // iterate from the first node.
 //        if (index == 0) {
-//            return (T) this.sentinel.next;
+//            return n.item;
 //        } else {
-//            return this.next.getRecursive(index - 1);
+//            n = n.next;
+//            return getRecursive(index - 1);
 //        }
-//
-//        // helper class?
-//    }
+
+        return this.sentinel.next.getItem(index);
+
+    }
 
     @Override
     public Iterator<T> iterator() {
@@ -217,7 +188,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
         private int iteratorIndex;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             this.iteratorIndex = 0;
         }
 
@@ -232,6 +203,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             iteratorIndex += 1;
             return next;
         }
+
     }
 
 

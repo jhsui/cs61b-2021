@@ -16,53 +16,99 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
-    private int firstPartInTheSecondHalf;
 
 
     public ArrayDeque() {
         arr = (T[]) new Object[8];
         this.size = 0;
 
-        this.nextFirst = 3;
-        this.nextLast = 4;
+        this.nextFirst = 7;
+        this.nextLast = 0;
 
-        this.firstPartInTheSecondHalf = 0;
 
     }
 
-
+    // the problem I ignore is that the new copied arr in the newArray may be in sequence
+    // if the operation is just add one side and remove another side.
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
 
-        if (this.firstPartInTheSecondHalf == 0) {
-            System.arraycopy(this.arr, this.nextFirst + 1, newArray, newArray.length / 4, this.arr.length);
 
-        } else {
-            for(int i = 0; i <= this.firstPartInTheSecondHalf; i++){
-                newArray[]
+        if (capacity > this.arr.length) {
+            // first half
+            System.arraycopy(this.arr, this.nextFirst, newArray,
+                    newArray.length - (this.arr.length - this.nextFirst),
+                    this.arr.length - this.nextFirst);
+
+            // second half
+            System.arraycopy(this.arr, 0, newArray, 0, this.nextFirst + 1);
+
+            this.nextLast = this.nextFirst + 1;
+            this.nextFirst = newArray.length - (this.arr.length - this.nextFirst);
+        }
+
+        if (capacity < this.arr.length) {
+            if (this.nextFirst > this.nextLast) {
+                System.arraycopy(this.arr, this.nextFirst + 1, newArray,
+                        Math.abs((this.arr.length - this.nextFirst) - newArray.length - 1),
+                        this.arr.length - 1 - this.nextFirst);
+                System.arraycopy(this.arr, 0, newArray, 0, this.nextLast);
+
+                this.nextLast = this.nextLast;
+                this.nextFirst = this.nextFirst - newArray.length;
             }
+
+            if (this.nextFirst < this.nextLast) {
+                System.arraycopy(this.arr, this.nextFirst + 1, newArray,
+                        newArray.length - (this.nextLast - this.nextFirst) + 1, this.size());
+
+                this.nextFirst = newArray.length - (this.nextLast - this.nextFirst);
+                this.nextLast = 0;
+            }
+
 
         }
 
 
+        this.arr = newArray;
+
+        /* how to deal with the nextFirst and nextLast?
+         *
+         * 1. re-put them as the order of user array.
+         * 2. keep the original sequence.
+         *
+         * let us first think about big case:
+         *
+         * no matter what, it is a circular,
+         * so, I should put space between first and last;
+         *
+         * yes, let's first think about the case of size = 16.
+         */
+
     }
 
+    // When the nextFist = nextLast, what should we do?
     @Override
     public void addFirst(T item) {
         if (this.size() == arr.length) {
             this.resize(this.arr.length * 2);
         }
 
+        if (this.nextFirst < 0) {
+            this.nextFirst += this.arr.length;
+        }
+        if (this.nextFirst > this.arr.length - 1) {
+            this.nextFirst -= this.arr.length;
+        }
+
         arr[this.nextFirst] = item;
+
 
         this.nextFirst--;
         if (this.nextFirst < 0) {
             this.nextFirst += this.arr.length;
         }
 
-        if (this.nextFirst > this.arr.length * 1.0 / 2) {
-            this.firstPartInTheSecondHalf += 1;
-        }
 
         this.size++;
     }
@@ -73,13 +119,13 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             this.resize(this.arr.length * 2);
         }
 
+
         arr[this.nextLast] = item;
 
         this.nextLast++;
         if (this.nextLast > this.arr.length - 1) {
             this.nextLast -= this.arr.length;
         }
-
         this.size++;
     }
 
@@ -104,23 +150,23 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (this.size() == 0) {
             return null;
         }
-
         T removedItem = this.get(0);
 
+
         this.nextFirst++;
+        if (this.nextFirst > this.arr.length - 1) {
+            this.nextFirst = this.nextFirst - this.arr.length;
+        }
 
         this.size--;
         if (this.size() < 0) {
             this.size = 0;
         }
+
+
         if (this.size() <= arr.length * 0.25 && arr.length > 8) {
             this.resize(this.arr.length / 2);
         }
-
-        if (this.nextFirst > this.arr.length * 1.0 / 2) {
-            this.firstPartInTheSecondHalf -= 1;
-        }
-
         return removedItem;
     }
 
@@ -134,6 +180,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         T removedItem = this.get(this.size() - 1);
 
         this.nextLast--;
+        if (this.nextLast < 0) {
+            this.nextLast += this.arr.length;
+        }
+
 
         this.size--;
 
@@ -151,11 +201,17 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
+        // here happened a jump because of the size became equal to the arr.length.
         int realIndex = this.nextFirst + 1 + index;
 
+        // is it here correct?
         if (realIndex > this.arr.length - 1) {
             realIndex -= this.arr.length;
         }
+        if (realIndex > this.arr.length - 1) {
+            realIndex -= this.arr.length;
+        }
+
 
         return this.arr[realIndex];
     }
@@ -167,12 +223,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return true;
         }
 
-        if (o instanceof ArrayDeque) {
-            if (this.size() != ((ArrayDeque<?>) o).size()) {
+        if (o instanceof Deque) {
+            if (this.size() != ((Deque<?>) o).size()) {
                 return false;
             }
             for (int i = 0; i < this.size(); i++) {
-                if (!Objects.equals(((ArrayDeque<?>) o).get(i), this.get(i))) {
+                if (!Objects.equals(((Deque<?>) o).get(i), this.get(i))) {
                     return false;
                 }
             }
@@ -191,7 +247,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         private int iteratorIndex;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             this.iteratorIndex = 0;
         }
 
