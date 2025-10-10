@@ -18,6 +18,13 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             this.item = item;
             this.next = n;
         }
+
+        public U getItem(int index) {
+            if (index == 0) {
+                return this.item;
+            }
+            return this.next.getItem(index - 1);
+        }
     }
 
     private final Node<T> sentinel;
@@ -159,14 +166,16 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
-        Node<T> n = this.sentinel.next;
+//        Node<T> n = this.sentinel.next;
+//
+//        if (index == 0) {
+//            return n.item;
+//        } else {
+//            n = n.next;
+//            return getRecursive(index - 1);
+//        }
 
-        if (index == 0) {
-            return n.item;
-        } else {
-            n = n.next;
-            return getRecursive(index - 1);
-        }
+        return this.sentinel.next.getItem(index);
 
     }
 
