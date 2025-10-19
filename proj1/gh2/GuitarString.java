@@ -11,7 +11,7 @@ public class GuitarString {
      * means the values cannot be changed at runtime. We'll discuss this and
      * other topics in lecture on Friday.
      */
-    private static final int SR = 44100;      // Sampling Rate
+    private static final int SR = 44100 ;      // Sampling Rate
     private static final double DECAY = .996; // energy decay factor
 
     /* Buffer for storing sound data. */
@@ -19,10 +19,8 @@ public class GuitarString {
 
     /* Create a guitar string of the given frequency.  */
     public GuitarString(double frequency) {
-
-
         this.buffer = new ArrayDeque<>();
-        int capacity = Math.toIntExact(Math.round(SR / frequency));
+        int capacity = Math.toIntExact( Math.round(SR / frequency));
         for (int i = 0; i < capacity; i++) {
             this.buffer.addLast(0.0);
         }
@@ -52,7 +50,6 @@ public class GuitarString {
      * the Karplus-Strong algorithm.
      */
     public void tic() {
-
         double first = this.buffer.get(0);
         double newDouble = (first + this.buffer.get(1)) * 0.5 * DECAY;
         this.buffer.addLast(newDouble);
